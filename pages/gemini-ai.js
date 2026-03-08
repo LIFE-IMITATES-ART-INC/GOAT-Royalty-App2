@@ -2,6 +2,12 @@
  * Gemini AI LLM Page
  * Full-featured AI chat interface powered by Google Gemini
  * Part of the GOAT Royalty App ecosystem
+ * 
+ * Security fixes applied per Copilot code review:
+ * - Removed dangerouslySetInnerHTML global copyCode script
+ *   (code copy now handled via React event delegation in GeminiLLM component)
+ * - Fixed viewport meta: removed maximum-scale=1.0 for accessibility
+ *   (allows pinch-zoom for low-vision users)
  */
 
 import Head from 'next/head';
@@ -51,7 +57,7 @@ export default function GeminiAIPage() {
       <Head>
         <title>Gemini AI LLM | GOAT Royalty App</title>
         <meta name="description" content="Full-featured Gemini AI LLM chat interface - powered by Google's most capable AI models. Built for the GOAT Royalty App ecosystem." />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -60,18 +66,6 @@ export default function GeminiAIPage() {
           body, html { margin: 0; padding: 0; overflow: hidden; height: 100%; }
           #__next { height: 100%; }
         `}</style>
-        <script dangerouslySetInnerHTML={{ __html: `
-          function copyCode(btn) {
-            var code = btn.closest('.code-block').querySelector('code');
-            if (code) {
-              navigator.clipboard.writeText(code.textContent).then(function() {
-                var orig = btn.textContent;
-                btn.textContent = '✅ Copied!';
-                setTimeout(function() { btn.textContent = orig; }, 2000);
-              });
-            }
-          }
-        `}} />
       </Head>
       <GeminiLLM />
     </>

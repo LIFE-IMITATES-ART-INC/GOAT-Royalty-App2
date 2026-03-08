@@ -2,58 +2,66 @@
  * Gemini AI LLM - Full-Featured Chat Interface
  * Complete AI chat with streaming, multi-modal, conversation management
  * Built for the GOAT Royalty App ecosystem
+ * 
+ * Security fixes applied per Copilot code review:
+ * - XSS: Uses marked + DOMPurify instead of regex HTML
+ * - No dangerouslySetInnerHTML with unsanitized content
+ * - No global inline onclick handlers
+ * - Proper AbortController cleanup
+ * - Stale state fix using refs
+ * - localStorage cleanup on empty conversations
+ * - Removed unused imports
  */
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Send, Sparkles, Loader, Copy, Check, Trash2, Bot, User,
   Settings, Download, Plus, MessageSquare, Image, X, Moon, Sun,
-  ChevronLeft, ChevronRight, Zap, Brain, Menu, RotateCcw,
-  Maximize2, Minimize2, Volume2, Mic, FileText, Code,
+  ChevronLeft, ChevronRight, Zap, Brain, Menu,
+  Maximize2, Minimize2, Code,
   TrendingUp, Music, Shield, Terminal
 } from 'lucide-react';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
-// ============ Markdown Renderer ============
+// ============ Secure Markdown Renderer ============
+// Configure marked for safe rendering
+marked.setOptions({
+  gfm: true,
+  breaks: true,
+});
+
+// Custom renderer to add classes and handle code blocks with copy buttons
+const renderer = new marked.Renderer();
+
+// Track code block index for unique IDs
+let codeBlockCounter = 0;
+
+renderer.code = function (code, language) {
+  const lang = language || 'text';
+  const id = `code-block-${++codeBlockCounter}`;
+  const escaped = escapeHtml(typeof code === 'object' ? code.text || '' : code);
+  return `<div class="code-block" id="${id}"><div class="code-header"><span>${escapeHtml(lang)}</span><button class="copy-btn" data-code-id="${id}">📋 Copy</button></div><pre><code class="language-${escapeHtml(lang)}">${escaped}</code></pre></div>`;
+};
+
+marked.setOptions({ renderer });
+
 function renderMarkdown(text) {
   if (!text) return '';
-  let html = text
-    // Code blocks with language
-    .replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
-      const language = lang || 'text';
-      return `<div class="code-block"><div class="code-header"><span>${language}</span><button onclick="copyCode(this)" class="copy-btn">📋 Copy</button></div><pre><code class="language-${language}">${escapeHtml(code.trim())}</code></pre></div>`;
-    })
-    // Inline code
-    .replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>')
-    // Bold
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    // Italic
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // Headers
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-    // Blockquotes
-    .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-    // Unordered lists
-    .replace(/^[•\-\*] (.+)$/gm, '<li>$1</li>')
-    // Ordered lists
-    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-    // Links
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-    // Horizontal rules
-    .replace(/^---$/gm, '<hr/>')
-    // Line breaks / paragraphs
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br/>');
 
-  // Wrap consecutive <li> in <ul>
-  html = html.replace(/(<li>.*?<\/li>)(\s*<br\/>?\s*<li>)/g, '$1$2');
-  html = html.replace(/(<li>[\s\S]*?<\/li>)/g, (match) => {
-    if (!match.startsWith('<ul>')) return `<ul>${match}</ul>`;
-    return match;
+  // Reset counter for each render
+  codeBlockCounter = 0;
+
+  // Use marked to generate HTML safely
+  const rawHtml = marked.parse(text);
+
+  // Sanitize the HTML and restrict URL protocols
+  const sanitizedHtml = DOMPurify.sanitize(rawHtml, {
+    ALLOWED_URI_REGEXP: /^(?:https?:|mailto:|#|$)/i,
+    ADD_ATTR: ['data-code-id'],
   });
 
-  return `<p>${html}</p>`;
+  return sanitizedHtml;
 }
 
 function escapeHtml(text) {
@@ -107,6 +115,13 @@ export default function GeminiLLM() {
   const fileInputRef = useRef(null);
   const abortControllerRef = useRef(null);
   const chatAreaRef = useRef(null);
+  // Use ref to track streaming text for AbortError handler (avoids stale closure)
+  const streamingTextRef = useRef('');
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    streamingTextRef.current = streamingText;
+  }, [streamingText]);
 
   // ============ Effects ============
   useEffect(() => {
@@ -117,7 +132,7 @@ export default function GeminiLLM() {
       try {
         const parsed = JSON.parse(saved);
         setConversations(parsed);
-      } catch (e) {}
+      } catch (e) { /* ignore corrupt data */ }
     }
   }, []);
 
@@ -126,11 +141,34 @@ export default function GeminiLLM() {
   }, [messages, streamingText]);
 
   useEffect(() => {
-    // Save conversations to localStorage
+    // Save conversations to localStorage, or remove key if empty
     if (conversations.length > 0) {
       localStorage.setItem('goat-gemini-conversations', JSON.stringify(conversations));
+    } else {
+      localStorage.removeItem('goat-gemini-conversations');
     }
   }, [conversations]);
+
+  // ============ Code Copy Handler (React event delegation) ============
+  useEffect(() => {
+    const handleCopyClick = (e) => {
+      const btn = e.target.closest('.copy-btn[data-code-id]');
+      if (!btn) return;
+      const blockId = btn.getAttribute('data-code-id');
+      const block = document.getElementById(blockId);
+      if (!block) return;
+      const code = block.querySelector('code');
+      if (!code) return;
+      navigator.clipboard.writeText(code.textContent).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 2000);
+      });
+    };
+
+    document.addEventListener('click', handleCopyClick);
+    return () => document.removeEventListener('click', handleCopyClick);
+  }, []);
 
   // ============ Functions ============
   const fetchModels = async () => {
@@ -294,6 +332,7 @@ export default function GeminiLLM() {
     setInput('');
     setIsStreaming(true);
     setStreamingText('');
+    streamingTextRef.current = '';
 
     // Update title for first message
     if (messages.length === 0) {
@@ -357,12 +396,12 @@ export default function GeminiLLM() {
               if (data.type === 'chunk' && data.text) {
                 fullText += data.text;
                 setStreamingText(fullText);
+                streamingTextRef.current = fullText;
               } else if (data.type === 'error') {
                 throw new Error(data.error);
               }
             } catch (e) {
               if (e.message !== 'Unexpected end of JSON input') {
-                // Only throw real errors
                 if (e.message.includes('API Error') || e.message.includes('Error')) {
                   throw e;
                 }
@@ -382,21 +421,24 @@ export default function GeminiLLM() {
       const finalMessages = [...newMessages, assistantMsg];
       setMessages(finalMessages);
       setStreamingText('');
+      streamingTextRef.current = '';
       updateConversation(convId, finalMessages);
 
     } catch (error) {
       if (error.name === 'AbortError') {
-        // User stopped generation
-        if (streamingText) {
+        // User stopped generation — use ref to get current streaming text (not stale state)
+        const currentText = streamingTextRef.current;
+        if (currentText) {
           const partialMsg = {
             id: (Date.now() + 1).toString(),
             role: 'assistant',
-            content: streamingText + '\n\n*[Generation stopped]*',
+            content: currentText + '\n\n*[Generation stopped]*',
             timestamp: new Date().toISOString(),
           };
           const finalMessages = [...newMessages, partialMsg];
           setMessages(finalMessages);
           setStreamingText('');
+          streamingTextRef.current = '';
           updateConversation(convId, finalMessages);
         }
       } else {
@@ -409,6 +451,7 @@ export default function GeminiLLM() {
         const finalMessages = [...newMessages, errorMsg];
         setMessages(finalMessages);
         setStreamingText('');
+        streamingTextRef.current = '';
         updateConversation(convId, finalMessages);
       }
     } finally {
@@ -901,7 +944,7 @@ export default function GeminiLLM() {
               </div>
               <h2>Super GOAT Gemini AI</h2>
               <p>
-                Powered by Google's most capable AI models. Your intelligent assistant for music production,
+                Powered by Google&apos;s most capable AI models. Your intelligent assistant for music production,
                 royalty management, IP protection, and everything GOAT Royalty.
               </p>
               <div className="g-quick-grid">
@@ -949,7 +992,7 @@ export default function GeminiLLM() {
                       dangerouslySetInnerHTML={{
                         __html: msg.role === 'assistant'
                           ? renderMarkdown(msg.content)
-                          : escapeHtml(msg.content).replace(/\n/g, '<br/>')
+                          : DOMPurify.sanitize(escapeHtml(msg.content).replace(/\n/g, '<br/>'))
                       }}
                     />
                   </div>
@@ -986,7 +1029,7 @@ export default function GeminiLLM() {
         {isStreaming && (
           <div style={{ textAlign: 'center', padding: '4px 0' }}>
             <button className="g-stop-btn" onClick={stopGeneration}>
-              ⬛ Stop Generating
+              ⏹ Stop Generating
             </button>
           </div>
         )}

@@ -47,12 +47,18 @@
       "next.config.js"
     ],
     "win": {
-      "target": ["nsis", "portable"],
+      "target": [
+        "nsis",
+        "portable"
+      ],
       "icon": "public/icon.ico",
       "sign": null
     },
     "mac": {
-      "target": ["dmg", "zip"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "category": "public.app-category.music",
       "icon": "public/icon.icns",
       "hardenedRuntime": true,
@@ -91,11 +97,12 @@
     "@supabase/supabase-js": "^2.78.0",
     "axios": "^1.6.0",
     "compression": "^1.8.1",
+    "dompurify": "^3.3.2",
     "dotenv": "^17.2.3",
     "express": "^4.18.2",
     "libreoffice-convert": "^1.7.0",
     "lucide-react": "^0.309.0",
-    "marked": "^16.4.1",
+    "marked": "^16.4.2",
     "next": "^14.1.0",
     "next-auth": "^4.24.13",
     "next-compose-plugins": "^2.2.1",

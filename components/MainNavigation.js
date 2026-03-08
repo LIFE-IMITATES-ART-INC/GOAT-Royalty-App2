@@ -27,6 +27,13 @@ const MainNavigation = () => {
       title: 'AI & Intelligence',
       items: [
         { name: '✦ Gemini AI LLM', href: '/gemini-ai', icon: Sparkles },
+        { name: '🔥 AI Studio', href: '/ai-studio', icon: Sparkles },
+        { name: '🛠️ AI Tools Suite', href: '/ai-tools', icon: Zap },
+        { name: '🎨 AI Image Studio', href: '/ai-image-studio', icon: Camera },
+        { name: '💻 AI Code Generator', href: '/ai-code', icon: Cpu },
+        { name: '✍️ AI Writer', href: '/ai-writer', icon: FileText },
+        { name: '🔍 AI Research Agent', href: '/ai-research', icon: Globe },
+        { name: '🧠 Deep Research', href: '/deep-research', icon: Target },
         { name: 'Analytics', href: '/analytics', icon: BarChart3 },
         { name: 'Interactive AI', href: '/interactive', icon: Zap },
         { name: 'Search', href: '/search', icon: Globe }
