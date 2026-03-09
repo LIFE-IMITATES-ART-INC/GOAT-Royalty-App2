@@ -1,0 +1,105 @@
+name: Build SuperNinja AI Desktop App
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        working-directory: super-ninja-app
+        run: npm install
+      - name: Build Windows
+        working-directory: super-ninja-app
+        run: npm run build:win
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: |
+            super-ninja-app/dist/*.exe
+
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        working-directory: super-ninja-app
+        run: npm install
+      - name: Build macOS
+        working-directory: super-ninja-app
+        run: npm run build:mac
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: |
+            super-ninja-app/dist/*.dmg
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        working-directory: super-ninja-app
+        run: npm install
+      - name: Build Linux
+        working-directory: super-ninja-app
+        run: npm run build:linux
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: |
+            super-ninja-app/dist/*.AppImage
+            super-ninja-app/dist/*.deb
+
+  create-release:
+    needs: [build-windows, build-mac, build-linux]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: SuperNinja AI ${{ github.ref_name }}
+          body: |
+            ## SuperNinja AI Desktop App ${{ github.ref_name }}
+            
+            ### Downloads
+            - **Windows**: SuperNinja-AI-Setup.exe (Installer) or Portable.exe
+            - **macOS**: SuperNinja-AI.dmg
+            - **Linux**: SuperNinja-AI.AppImage or .deb
+            
+            ### Features
+            - Multi-LLM Support (GPT-4o, Gemini, Claude, Ollama)
+            - Terminal, Code Editor, File Manager
+            - Web Browser, Image/Audio/PDF Tools
+            - Data Analysis, Music Production, Royalty Calculator
+            - Dark/Light themes, keyboard shortcuts
+            
+            Built for Harvey Miller (DJ Speedy) | GOAT Royalty Edition
+          files: |
+            windows-build/*
+            macos-build/*
+            linux-build/*
+          draft: false
+          prerelease: false

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html><head><title>GOAT Icon Generator</title><script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body style="margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#111;">
+<canvas id="c" width="512" height="512"></canvas>
+<script>
+const c=document.getElementById('c'),x=c.getContext('2d');
+// Background gradient
+const g=x.createLinearGradient(0,0,512,512);
+g.addColorStop(0,'#0a0a0a');g.addColorStop(0.5,'#1a0a2e');g.addColorStop(1,'#000');
+x.fillStyle=g;x.beginPath();x.roundRect(0,0,512,512,80);x.fill();
+// Gold border
+x.strokeStyle='#FFD700';x.lineWidth=6;x.beginPath();x.roundRect(12,12,488,488,70);x.stroke();
+// GOAT emoji
+x.font='180px serif';x.textAlign='center';x.fillText('🐐',256,240);
+// Lightning
+x.font='100px serif';x.fillText('⚡',256,340);
+// Text
+x.font='bold 48px -apple-system,sans-serif';
+x.fillStyle='#FFD700';x.fillText('SUPER GOAT',256,420);
+x.font='bold 36px -apple-system,sans-serif';
+x.fillStyle='#FF6B35';x.fillText('ROYALTY',256,470);
+// Download
+c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='icon.png';a.click();});
+</script></body></html>

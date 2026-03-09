@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: http:; img-src 'self' data: blob: https: http:; media-src 'self' data: blob: https: http:; connect-src *; frame-src *;">
+  <title>Super GOAT Royalty v4.1.0 — Ultimate Command Center</title>
+  <link rel="stylesheet" href="styles.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+<div id="app">
+  <!-- TITLE BAR -->
+  <div class="titlebar">
+    <div class="titlebar-left">
+      <span class="titlebar-logo">&#x1F410;&#x26A1;</span>
+      <span class="titlebar-appname">SUPER GOAT ROYALTY</span>
+    </div>
+    <div class="titlebar-center" id="titlebar-text">v4.1.0 — Ultimate Edition</div>
+    <div class="titlebar-right">
+      <button class="titlebar-btn" onclick="GOAT.window.minimize()" title="Minimize">&#x2500;</button>
+      <button class="titlebar-btn" onclick="GOAT.window.maximize()" title="Maximize">&#x25A1;</button>
+      <button class="titlebar-btn close" onclick="GOAT.window.close()" title="Close">&#x2715;</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-container">
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-toggle" onclick="GOAT.toggleSidebar()">&#x2630;</div>
+      <div class="nav-scroll">
+        <div class="nav-section">
+          <div class="nav-section-title">Home</div>
+          <div class="nav-item active" data-view="dashboard" onclick="GOAT.navigate('dashboard')"><span class="nav-icon">&#x1F3E0;</span><span class="nav-label">Dashboard</span></div>
+          <div class="nav-item" data-view="command-center" onclick="GOAT.navigate('command-center')"><span class="nav-icon">&#x26A1;</span><span class="nav-label">Command Center</span><span class="nav-badge">30</span></div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">AI &amp; LLM Tools</div>
+          <div class="nav-item" data-view="ai-chat" onclick="GOAT.navigate('ai-chat')"><span class="nav-icon">&#x1F916;</span><span class="nav-label">AI Chat</span></div>
+          <div class="nav-item" data-view="llm-builder" onclick="GOAT.navigate('llm-builder')"><span class="nav-icon">&#x1F9E0;</span><span class="nav-label">LLM Builder</span></div>
+          <div class="nav-item" data-view="agent-platform" onclick="GOAT.navigate('agent-platform')"><span class="nav-icon">&#x1F4A1;</span><span class="nav-label">AI Agents</span></div>
+          <div class="nav-item" data-view="rag-studio" onclick="GOAT.navigate('rag-studio')"><span class="nav-icon">&#x1F4DA;</span><span class="nav-label">RAG Studio</span></div>
+          <div class="nav-item" data-view="prompt-lab" onclick="GOAT.navigate('prompt-lab')"><span class="nav-icon">&#x1F4DD;</span><span class="nav-label">Prompt Lab</span></div>
+          <div class="nav-item" data-view="ai-factory" onclick="GOAT.navigate('ai-factory')"><span class="nav-icon">&#x1F3ED;</span><span class="nav-label">AI Factory</span></div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Dev Tools</div>
+          <div class="nav-item" data-view="terminal" onclick="GOAT.navigate('terminal')"><span class="nav-icon">&#x1F5A5;</span><span class="nav-label">Terminal</span></div>
+          <div class="nav-item" data-view="code-editor" onclick="GOAT.navigate('code-editor')"><span class="nav-icon">&#x1F4DD;</span><span class="nav-label">Code Editor</span></div>
+          <div class="nav-item" data-view="file-manager" onclick="GOAT.navigate('file-manager')"><span class="nav-icon">&#x1F4C1;</span><span class="nav-label">File Manager</span></div>
+          <div class="nav-item" data-view="browser" onclick="GOAT.navigate('browser')"><span class="nav-icon">&#x1F310;</span><span class="nav-label">Browser</span></div>
+          <div class="nav-item" data-view="api-tester" onclick="GOAT.navigate('api-tester')"><span class="nav-icon">&#x1F50C;</span><span class="nav-label">API Tester</span></div>
+          <div class="nav-item" data-view="git-manager" onclick="GOAT.navigate('git-manager')"><span class="nav-icon">&#x1F500;</span><span class="nav-label">Git Manager</span></div>
+          <div class="nav-item" data-view="snippets" onclick="GOAT.navigate('snippets')"><span class="nav-icon">&#x1F4CB;</span><span class="nav-label">Snippets</span></div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Music &amp; Royalties</div>
+          <div class="nav-item" data-view="royalties" onclick="GOAT.navigate('royalties')"><span class="nav-icon">&#x1F4B0;</span><span class="nav-label">Royalties</span></div>
+          <div class="nav-item" data-view="catalog" onclick="GOAT.navigate('catalog')"><span class="nav-icon">&#x1F3B5;</span><span class="nav-label">Catalog</span><span class="nav-badge">3650</span></div>
+          <div class="nav-item" data-view="analytics" onclick="GOAT.navigate('analytics')"><span class="nav-icon">&#x1F4CA;</span><span class="nav-label">Analytics</span></div>
+          <div class="nav-item" data-view="publishing" onclick="GOAT.navigate('publishing')"><span class="nav-icon">&#x1F4CB;</span><span class="nav-label">Publishing</span></div>
+          <div class="nav-item" data-view="streaming" onclick="GOAT.navigate('streaming')"><span class="nav-icon">&#x1F4E1;</span><span class="nav-label">Streaming</span></div>
+          <div class="nav-item" data-view="production" onclick="GOAT.navigate('production')"><span class="nav-icon">&#x1F3B9;</span><span class="nav-label">Production</span></div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Creative Studio</div>
+          <div class="nav-item" data-view="adobe-firefly" onclick="GOAT.navigate('adobe-firefly')"><span class="nav-icon">&#x1F3A8;</span><span class="nav-label">Adobe Firefly</span></div>
+          <div class="nav-item" data-view="sora-ai" onclick="GOAT.navigate('sora-ai')"><span class="nav-icon">&#x1F3AC;</span><span class="nav-label">Sora AI</span></div>
+          <div class="nav-item" data-view="cinema-camera" onclick="GOAT.navigate('cinema-camera')"><span class="nav-icon">&#x1F4F7;</span><span class="nav-label">Cinema Camera</span></div>
+          <div class="nav-item" data-view="fashion-store" onclick="GOAT.navigate('fashion-store')"><span class="nav-icon">&#x1F457;</span><span class="nav-label">Fashion Forge</span></div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Business</div>
+          <div class="nav-item" data-view="store-manager" onclick="GOAT.navigate('store-manager')"><span class="nav-icon">&#x1F3EA;</span><span class="nav-label">Builders Supply</span></div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Infrastructure</div>
+          <div class="nav-item" data-view="servers" onclick="GOAT.navigate('servers')"><span class="nav-icon">&#x1F5A5;</span><span class="nav-label">Servers</span></div>
+          <div class="nav-item" data-view="nvidia-dgx" onclick="GOAT.navigate('nvidia-dgx')"><span class="nav-icon">&#x1F7E2;</span><span class="nav-label">NVIDIA DGX</span></div>
+          <div class="nav-item" data-view="system-monitor" onclick="GOAT.navigate('system-monitor')"><span class="nav-icon">&#x1F4BB;</span><span class="nav-label">System Monitor</span></div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Productivity</div>
+          <div class="nav-item" data-view="notes" onclick="GOAT.navigate('notes')"><span class="nav-icon">&#x1F4D3;</span><span class="nav-label">Notes</span></div>
+          <div class="nav-item" data-view="tasks" onclick="GOAT.navigate('tasks')"><span class="nav-icon">&#x2705;</span><span class="nav-label">Tasks</span></div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">External</div>
+          <div class="nav-item" onclick="GOAT.openExternal('https://chat.openai.com')"><span class="nav-icon">&#x1F4AC;</span><span class="nav-label">ChatGPT</span></div>
+          <div class="nav-item" onclick="GOAT.openExternal('https://claude.ai')"><span class="nav-icon">&#x1F9E0;</span><span class="nav-label">Claude</span></div>
+          <div class="nav-item" onclick="GOAT.openExternal('https://github.com/DJSPEEDYGA')"><span class="nav-icon">&#x1F419;</span><span class="nav-label">GitHub</span></div>
+          <div class="nav-item" onclick="GOAT.openExternal('https://builderscloseoutsupply.com')"><span class="nav-icon">&#x1F3EA;</span><span class="nav-label">Store Website</span></div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">System</div>
+          <div class="nav-item" data-view="settings" onclick="GOAT.navigate('settings')"><span class="nav-icon">&#x2699;</span><span class="nav-label">Settings</span></div>
+          <div class="nav-item" data-view="about" onclick="GOAT.navigate('about')"><span class="nav-icon">&#x2139;</span><span class="nav-label">About</span></div>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-dot"></div>
+        <div class="sidebar-footer-text">v4.1.0 Online</div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content" id="content">
+      <div id="view-container" class="h-full"></div>
+    </div>
+  </div>
+
+  <!-- PLAYER BAR -->
+  <div class="player-bar" id="player-bar">
+    <div class="player-track-info">
+      <div class="player-artwork">&#x1F3B5;</div>
+      <div>
+        <div class="player-track-name" id="player-track-name">No Track Playing</div>
+        <div class="player-track-artist" id="player-track-artist">GOAT Royalty</div>
+      </div>
+    </div>
+    <div class="player-controls">
+      <button class="player-btn" onclick="GOAT.player.prev()">Prev</button>
+      <button class="player-btn play" id="player-play-btn" onclick="GOAT.player.toggle()">Play</button>
+      <button class="player-btn" onclick="GOAT.player.next()">Next</button>
+      <div class="player-progress">
+        <div class="player-progress-bar"><div class="player-progress-fill" id="player-progress"></div></div>
+        <div class="player-time"><span id="player-current-time">0:00</span><span id="player-total-time">0:00</span></div>
+      </div>
+    </div>
+    <div class="player-volume"><span>Vol</span><div class="player-volume-bar"><div class="player-volume-fill" id="player-volume"></div></div></div>
+  </div>
+
+  <!-- TOASTS -->
+  <div class="toast-container" id="toast-container"></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

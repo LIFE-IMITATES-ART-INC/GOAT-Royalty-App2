@@ -1,0 +1,11 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024' viewBox='0 0 1024 1024'>
+  <defs>
+    <linearGradient id='bg' x1='0%' y1='0%' x2='100%' y2='100%'>
+      <stop offset='0%' style='stop-color:#7c3aed'/>
+      <stop offset='100%' style='stop-color:#06b6d4'/>
+    </linearGradient>
+  </defs>
+  <rect width='1024' height='1024' rx='200' fill='url(#bg)'/>
+  <path d='M560 150 L350 500 L480 500 L420 874 L700 450 L550 450 Z' fill='white'/>
+  <text x='512' y='960' text-anchor='middle' font-family='Arial' font-weight='bold' font-size='120' fill='rgba(255,255,255,0.3)'>SN</text>
+</svg>

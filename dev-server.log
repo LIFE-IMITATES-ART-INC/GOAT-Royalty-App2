@@ -1,0 +1,13 @@
+
+> goat-royalty-app@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.33
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 912ms
+ ○ Compiling /api/summary ...
+ ✓ Compiled /api/summary in 666ms (133 modules)
+ GET /api/summary 200 in 690ms
+[?25h

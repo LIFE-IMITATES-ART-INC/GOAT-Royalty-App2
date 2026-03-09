@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: http: ws: wss: data: blob:; img-src 'self' data: https: http:; media-src 'self' https: http:;">
+  <title>GOAT Royalty — Ultimate Launcher</title>
+  <style>
+    /* ── RESET & BASE ─────────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #050508; color: #fff; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    
+    /* ── TITLE BAR ────────────────────────────────────────── */
+    .titlebar { -webkit-app-region: drag; height: 38px; background: #050508; border-bottom: 1px solid rgba(255,215,0,0.08); display: flex; align-items: center; padding: 0 16px 0 80px; flex-shrink: 0; }
+    .titlebar-title { font-size: 12px; color: rgba(255,255,255,0.4); font-weight: 600; letter-spacing: 0.5px; }
+    .titlebar-version { font-size: 10px; color: rgba(255,215,0,0.4); margin-left: 8px; background: rgba(255,215,0,0.08); padding: 1px 6px; border-radius: 4px; -webkit-app-region: no-drag; }
+
+    /* ── LAYOUT ────────────────────────────────────────────── */
+    .app { display: flex; height: calc(100vh - 38px); }
+    .sidebar { width: 68px; background: #08080d; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; padding: 12px 0; flex-shrink: 0; overflow-y: auto; }
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* ── SIDEBAR ICONS ─────────────────────────────────────── */
+    .nav-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 4px; transition: all 0.2s; position: relative; font-size: 20px; background: transparent; border: none; color: rgba(255,255,255,0.4); }
+    .nav-icon:hover { background: rgba(255,215,0,0.08); color: #FFD700; transform: scale(1.05); }
+    .nav-icon.active { background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,107,53,0.1)); color: #FFD700; box-shadow: 0 0 15px rgba(255,215,0,0.1); }
+    .nav-icon.active::before { content: ''; position: absolute; left: -10px; width: 3px; height: 20px; background: #FFD700; border-radius: 0 3px 3px 0; }
+    .nav-tooltip { display: none; position: absolute; left: 58px; background: #1a1a2e; color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 11px; white-space: nowrap; z-index: 100; pointer-events: none; border: 1px solid rgba(255,215,0,0.15); }
+    .nav-icon:hover .nav-tooltip { display: block; }
+    .nav-sep { width: 32px; height: 1px; background: rgba(255,255,255,0.06); margin: 8px 0; }
+
+    /* ── CONTENT AREA ──────────────────────────────────────── */
+    .content { flex: 1; overflow-y: auto; padding: 0; }
+    .content-padded { padding: 24px 28px; }
+
+    /* ── HEADER ────────────────────────────────────────────── */
+    .page-header { padding: 20px 28px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(5,5,8,0.8); backdrop-filter: blur(10px); flex-shrink: 0; }
+    .page-title { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #FFD700, #FF6B35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-subtitle { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+    /* ── TOOL GRID ─────────────────────────────────────────── */
+    .section-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; margin: 24px 0 12px; display: flex; align-items: center; gap: 8px; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
+    .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .tool-card { padding: 16px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; transition: all 0.25s; display: flex; flex-direction: column; gap: 8px; }
+    .tool-card:hover { background: rgba(255,215,0,0.05); border-color: rgba(255,215,0,0.15); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+    .tool-icon { font-size: 28px; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .tool-name { font-size: 14px; font-weight: 700; color: #e5e7eb; }
+    .tool-desc { font-size: 11px; color: rgba(255,255,255,0.4); line-height: 1.4; }
+    .tool-badge { font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: 600; display: inline-block; width: fit-content; }
+    .badge-built { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+    .badge-web { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.2); }
+    .badge-desktop { background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.2); }
+    .badge-ai { background: rgba(255,215,0,0.15); color: #FFD700; border: 1px solid rgba(255,215,0,0.2); }
+    .badge-external { background: rgba(255,107,53,0.15); color: #FF6B35; border: 1px solid rgba(255,107,53,0.2); }
+
+    /* ── WEBVIEW ───────────────────────────────────────────── */
+    .webview-container { flex: 1; position: relative; }
+    .webview-container webview { width: 100%; height: 100%; border: none; }
+    .webview-bar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: #0a0a0f; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+    .webview-url { flex: 1; padding: 6px 12px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 12px; font-family: 'SF Mono', monospace; }
+    .webview-btn { padding: 6px 12px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); cursor: pointer; font-size: 12px; transition: all 0.2s; }
+    .webview-btn:hover { background: rgba(255,215,0,0.1); color: #FFD700; border-color: rgba(255,215,0,0.2); }
+
+    /* ── STATS BAR ─────────────────────────────────────────── */
+    .stats-bar { display: flex; gap: 16px; padding: 16px 0; }
+    .stat-card { flex: 1; padding: 16px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); text-align: center; }
+    .stat-value { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #FFD700, #FF6B35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+    /* ── SEARCH ────────────────────────────────────────────── */
+    .search-box { padding: 10px 16px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #fff; font-size: 14px; width: 100%; margin-bottom: 20px; outline: none; transition: border-color 0.2s; }
+    .search-box:focus { border-color: rgba(255,215,0,0.3); }
+    .search-box::placeholder { color: rgba(255,255,255,0.25); }
+
+    /* ── ANIMATIONS ────────────────────────────────────────── */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.3s ease-out; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .pulse { animation: pulse 2s ease-in-out infinite; }
+    @keyframes glow { 0%,100% { box-shadow: 0 0 5px rgba(255,215,0,0.2); } 50% { box-shadow: 0 0 20px rgba(255,215,0,0.4); } }
+  </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+  <!-- Title Bar -->
+  <div class="titlebar">
+    <span class="titlebar-title">🐐 GOAT ROYALTY</span>
+    <span class="titlebar-version" id="version">v3.0.0</span>
+  </div>
+
+  <div class="app">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <!-- Main Content -->
+    <div class="main" id="main"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

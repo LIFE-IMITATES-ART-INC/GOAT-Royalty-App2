@@ -1,0 +1,119 @@
+name: Build Super GOAT Royalty Desktop App
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Dependencies
+        working-directory: ./SuperGOATRoyalty
+        run: npm install
+      - name: Build Windows (EXE + Portable)
+        working-directory: ./SuperGOATRoyalty
+        run: npm run build:win
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: |
+            SuperGOATRoyalty/dist/*.exe
+          retention-days: 30
+
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Dependencies
+        working-directory: ./SuperGOATRoyalty
+        run: npm install
+      - name: Build macOS (DMG + ZIP)
+        working-directory: ./SuperGOATRoyalty
+        run: npm run build:mac
+      - name: Upload macOS Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-build
+          path: |
+            SuperGOATRoyalty/dist/*.dmg
+            SuperGOATRoyalty/dist/*.zip
+          retention-days: 30
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Dependencies
+        working-directory: ./SuperGOATRoyalty
+        run: npm install
+      - name: Build Linux (AppImage + DEB)
+        working-directory: ./SuperGOATRoyalty
+        run: npm run build:linux
+      - name: Upload Linux Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: |
+            SuperGOATRoyalty/dist/*.AppImage
+            SuperGOATRoyalty/dist/*.deb
+          retention-days: 30
+
+  create-release:
+    needs: [build-windows, build-mac, build-linux]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: "Super GOAT Royalty ${{ github.ref_name }}"
+          body: |
+            ## 🐐⚡ Super GOAT Royalty ${{ github.ref_name }}
+            
+            Ultimate AI-Powered Music Production & Royalty Management Desktop App
+            
+            ### Downloads
+            - **Windows**: Setup EXE + Portable EXE
+            - **macOS**: DMG (Intel + Apple Silicon) + ZIP
+            - **Linux**: AppImage + DEB
+            
+            ### Features
+            - 🤖 Multi-LLM AI Chat (Ollama, GPT-4o, Gemini, Claude, Groq)
+            - 🖥️ Built-in Terminal with SSH to Hostinger servers
+            - 📝 Code Editor with syntax detection
+            - 📁 File Manager
+            - 🌐 Built-in Web Browser
+            - 💰 Royalty Calculator (8 platforms)
+            - 🎵 3,650 Track Catalog
+            - 📊 Streaming Analytics
+            - 🎨 Adobe Firefly AI Studio
+            - 🎬 Sora AI Video Studio
+            - 🖥️ Server Manager (KVM2 + KVM8)
+            - 🎹 Music Production Suite
+            - And 20+ more tools!
+            
+            © 2025 Harvey Miller (DJ Speedy) / GOAT Royalty
+          files: |
+            windows-build/*
+            mac-build/*
+            linux-build/*
+          draft: false
+          prerelease: false

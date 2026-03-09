@@ -1,0 +1,106 @@
+{
+  "name": "super-goat-royalty",
+  "version": "4.1.0",
+  "description": "Super GOAT Royalty — Ultimate AI-Powered Music Production & Royalty Management Desktop App",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win --x64",
+    "build:mac": "electron-builder --mac --x64 --arm64",
+    "build:linux": "electron-builder --linux --x64",
+    "build:portable": "electron-builder --win portable",
+    "build:all": "electron-builder --win --mac --linux",
+    "build:dir": "electron-builder --dir",
+    "postinstall": "echo 'Super GOAT Royalty dependencies installed!'"
+  },
+  "build": {
+    "appId": "com.goatroyalty.supergoat",
+    "productName": "Super GOAT Royalty",
+    "copyright": "Copyright © 2025 Harvey Miller (DJ Speedy) / GOAT Royalty. All Rights Reserved.",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [],
+    "publish": null,
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ],
+      "icon": "assets/icon.png",
+      "artifactName": "Super-GOAT-Royalty-${version}-Setup.${ext}",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "mac": {
+      "target": [
+        { "target": "dmg", "arch": ["x64", "arm64"] },
+        { "target": "zip", "arch": ["x64", "arm64"] }
+      ],
+      "icon": "assets/icon.png",
+      "category": "public.app-category.music",
+      "artifactName": "Super-GOAT-Royalty-${version}-mac.${ext}",
+      "darkModeSupport": true,
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
+    },
+    "linux": {
+      "target": [
+        { "target": "AppImage", "arch": ["x64"] },
+        { "target": "deb", "arch": ["x64"] }
+      ],
+      "icon": "assets/icon.png",
+      "category": "Audio",
+      "artifactName": "Super-GOAT-Royalty-${version}-linux.${ext}",
+      "maintainer": "Harvey Miller <djspeedyga@gmail.com>"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Super GOAT Royalty",
+      "uninstallDisplayName": "Super GOAT Royalty"
+    },
+    "portable": {
+      "artifactName": "Super-GOAT-Royalty-${version}-Portable.${ext}"
+    },
+    "dmg": {
+      "contents": [
+        { "x": 130, "y": 220 },
+        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DJSPEEDYGA/GOAT-Royalty-App2.git"
+  },
+  "dependencies": {
+    "axios": "^1.7.0",
+    "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "author": {
+    "name": "Harvey Miller (DJ Speedy)",
+    "email": "djspeedyga@gmail.com"
+  },
+  "contributors": [
+    "Harvey L Miller Jr <harvey@goatroyaltyapp.com>",
+    "Juaquin J Malphurs <juaquin@goatroyaltyapp.com>",
+    "Kevin W Hallingquest <kevin@goatroyaltyapp.com>"
+  ],
+  "license": "UNLICENSED",
+  "private": true
+}
