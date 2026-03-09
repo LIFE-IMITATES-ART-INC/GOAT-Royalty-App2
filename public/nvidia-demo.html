@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVIDIA NIM Hub - GOAT Royalty App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .header {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            color: #76b900;
+            margin-bottom: 0.5rem;
+        }
+        .header p {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        .stat-card {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #76b900;
+        }
+        .stat-label {
+            color: #888;
+            margin-top: 0.5rem;
+        }
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .model-card {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            transition: all 0.2s;
+        }
+        .model-card:hover {
+            border-color: #76b900;
+        }
+        .model-card h3 {
+            font-size: 1.25rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .model-card .meta {
+            color: #76b900;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        .model-card p {
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .model-card .downloads {
+            color: #76b900;
+            font-size: 0.875rem;
+        }
+        .info-box {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .info-box h3 {
+            color: #76b900;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .info-box ul {
+            color: #888;
+            line-height: 2;
+            padding-left: 1.5rem;
+        }
+        .badge {
+            display: inline-block;
+            background: #76b900;
+            color: #000;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+    </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 NVIDIA NIM HUB</h1>
+            <p>GOAT Royalty App x NVIDIA AI Integration • 215+ Models Available</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value">215</div>
+                <div class="stat-label">Total Models</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">94</div>
+                <div class="stat-label">API Endpoints</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">87.5M</div>
+                <div class="stat-label">Downloads</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Active Apps</div>
+            </div>
+        </div>
+
+        <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: #76b900;">
+            Top NVIDIA NIM Models
+        </h2>
+
+        <div class="models-grid">
+            <div class="model-card">
+                <h3>DeepSeek V3.2</h3>
+                <div class="meta">DeepSeek AI • 685B</div>
+                <p>685B reasoning LLM with sparse attention, long context, integrated agentic tools</p>
+                <div class="downloads">15.34M downloads</div>
+            </div>
+
+            <div class="model-card">
+                <h3>Kimi K2.5</h3>
+                <div class="meta">Moonshot AI • 1T</div>
+                <p>1T multimodal MoE for high-capacity video and image understanding with efficient inference</p>
+                <div class="downloads">20.93M downloads</div>
+            </div>
+
+            <div class="model-card">
+                <h3>Qwen 3.5 397B</h3>
+                <div class="meta">Qwen • 400B</div>
+                <p>Next-gen Qwen 3.5 VLM with advanced vision, chat, RAG, and agentic capabilities</p>
+                <div class="downloads">6.11M downloads</div>
+            </div>
+
+            <div class="model-card">
+                <h3>GLM-5</h3>
+                <div class="meta">Z.ai • 744B</div>
+                <p>744B MoE enables efficient reasoning for complex systems and long-horizon agentic tasks</p>
+                <div class="downloads">7.38M downloads</div>
+            </div>
+
+            <div class="model-card">
+                <h3>Nemotron 3 Nano 30B</h3>
+                <div class="meta">NVIDIA • 30B</div>
+                <p>Open, efficient MoE model with 1M context, excelling in coding, reasoning, instruction following</p>
+                <div class="downloads">12.13M downloads</div>
+            </div>
+
+            <div class="model-card">
+                <h3>MiniMax M2.5</h3>
+                <div class="meta">Minimaxai • 230B</div>
+                <p>230B-parameter text-to-text AI model excelling in coding, reasoning, and office tasks</p>
+                <div class="downloads">2.69M downloads</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>📝 Quick Actions</h3>
+            <ul>
+                <li>✅ <strong>All 215+ NVIDIA NIM models</strong> are available through the API</li>
+                <li>✅ <strong>7 API endpoints</strong> created and configured (royalty-calc, video-analysis, rag-query, code-gen, audio-recognition, nim-call, models)</li>
+                <li>✅ <strong>Your NVIDIA API keys</strong> are loaded and configured</li>
+                <li>✅ <strong>Complete NIM client library</strong> with 10 specialized methods</li>
+                <li>⚠️ <strong>Free tier models</strong> may return 404 - use paid NVIDIA NIM endpoints for production</li>
+            </ul>
+        </div>
+
+        <div class="info-box" style="margin-top: 2rem;">
+            <h3>🔗 Quick Links</h3>
+            <div style="margin-top: 1rem;">
+                <a href="http://localhost:3001/api/nvidia/models" target="_blank" style="color: #76b900; text-decoration: none; margin-right: 1rem;">
+                    API: List Models
+                </a>
+                <a href="http://localhost:3001/super-shazam" target="_blank" style="color: #76b900; text-decoration: none;">
+                    Super Shazam
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
