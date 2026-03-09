@@ -274,7 +274,7 @@ export default function NVIDIANIMHub() {
                 <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                   {model.features.map((f, j) => (
                     <span key={j} style={{
-                      background: 'rgba(255,255,255,0.05), padding: '0.25rem 0.5rem',
+                      background: 'rgba(255,255,255,0.05)', padding: '0.25rem 0.5rem',
                       borderRadius: '0.25rem', fontSize: '0.7rem', color: '#666'
                     }}>{f}</span>
                   ))}
@@ -333,7 +333,7 @@ export default function NVIDIANIMHub() {
                 { label: 'Monitor Performance', icon: BarChart3 }
               ].map((action, i) => (
                 <button key={i} style={{
-                  background: 'rgba(255,255,255,0.05), border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
                   borderRadius: '0.5rem', padding: '0.6rem 0.75rem', color: '#fff',
                   cursor: 'pointer', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem'
                 }}>
