@@ -274,8 +274,11 @@ export default function NVIDIANIMHub() {
                 <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                   {model.features.map((f, j) => (
                     <span key={j} style={{
-                      background: 'rgba(255,255,255,0.05)', padding: '0.25rem 0.5rem',
-                      borderRadius: '0.25rem', fontSize: '0.7rem', color: '#666'
+                      background: 'rgba(255,255,255,0.05)',
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: '0.25rem',
+                      fontSize: '0.7rem',
+                      color: '#666'
                     }}>{f}</span>
                   ))}
                 </div>
