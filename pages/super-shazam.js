@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { Mic, StopCircle, Play, Music, Sparkles, Zap, Clock, Database, Headphones, Waveform } from 'lucide-react';
+import { Mic, StopCircle, Play, Music, Sparkles, Zap, Clock, Database, Headphones, AudioWaveform } from 'lucide-react';
 
 export default function SuperShazam() {
   const [isRecording, setIsRecording] = useState(false);
@@ -111,7 +111,7 @@ export default function SuperShazam() {
               gap: '0.25rem'
             }}>
               {isRecording ? (
-                <Waveform size={48} color="#76b900" />
+                <AudioWaveform size={48} color="#76b900" />
               ) : isAnalyzing ? (
                 <div style={{ textAlign: 'center' }}>
                   <Sparkles size={48} color="#76b900" style={{ animation: 'spin 1s linear infinite' }} />
