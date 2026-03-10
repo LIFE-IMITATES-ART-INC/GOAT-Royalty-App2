@@ -1,107 +1,264 @@
-/**
- * Enhanced Video Background Component
- * GOAT Force branded video background with red/black theme
- * Fallback gradient is vibrant enough to look great without video
- */
+// 🎬 Enhanced Video Background Component with GOAT Branding
+// Combines dynamic videos with GOAT logo overlays
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import GoatBranding from './GoatBranding';
 
 const EnhancedVideoBackground = ({ 
-  showGoatLogo = true, 
-  logoPosition = 'top-right',
-  autoPlay = true,
-  muted = true,
+  showGoatLogo = true,
+  logoPosition = 'center',
+  videos = [], 
+  autoPlay = true, 
+  muted = true, 
   loop = true,
-  overlayOpacity = 0.4 
+  className = "",
+  overlayOpacity = 0.4,
+  transitionDuration = 2000
 }) => {
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [currentVideo, setCurrentVideo] = useState(0);
 
-  const videos = [
-    '/videos/goat-logo-animation.mp4',
-    '/videos/grok-video-BLUE GOAT CANT FUCK WITH ME).mp4',
-    '/videos/grok-video-BLUE GOAT 23).mp4',
-    '/videos/grok-video- NERD BITCH3.mp4',
-    '/videos/grok-video- (1).mp4',
-    '/videos/grok-video- (2).mp4',
-    '/videos/grok-video- (3).mp4'
+  // 🎥 Available background videos with GOAT branding
+  const defaultVideos = [
+    '/videos/backgrounds/grok-video-86c93c9c-4fd8-4256-af66-005c30855691.mp4', // Main background
+    '/videos/backgrounds/grok-video-4fca66f9-2b92-4c4a-b9df-b42b33ceb052.mp4', // Alternative 1
+    '/videos/backgrounds/grok-video-b71352bf-f82c-46e5-ae08-0cc25fcdc33f.mp4', // Alternative 2
+    '/videos/backgrounds/grok-video-210800ab-b662-4a54-b90f-8a37dcd54099.mp4', // Alternative 3
+    '/videos/backgrounds/grok-video-4f28cf25-600c-43f4-8108-28cccd06909a.mp4', // Alternative 4
+    '/videos/backgrounds/grok-video-e8139ccc-06ad-4117-8b2e-c6121e784330-2.mp4', // Alternative 5
+    '/videos/backgrounds/grok-video-0001ca7b-403c-4e4b-9883-801c516b8c2d.mp4', // Alternative 6
+    '/videos/backgrounds/grok-video-BLUE GOAT 23).mp4', // GOAT branded
+    '/videos/backgrounds/grok-video-BLUE GOAT CANT FUCK WITH ME).mp4', // GOAT branded 2
+    '/videos/backgrounds/grok-video- NERD BITCH3.mp4' // Special edition
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentVideo((prev) => (prev + 1) % videos.length);
-    }, 12000);
-    return () => clearInterval(interval);
-  }, []);
+  const videoSources = videos.length > 0 ? videos : defaultVideos;
 
+  // 🎬 Video rotation effect
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.load();
-      videoRef.current.play().catch(() => {});
+    if (!autoPlay || videoSources.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videoSources.length);
+    }, 12000); // Change video every 12 seconds
+
+    return () => clearInterval(interval);
+  }, [autoPlay, videoSources.length]);
+
+  // 🎥 Video load handling
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleCanPlay = () => {
+      setIsLoaded(true);
+      if (autoPlay) {
+        video.play().catch(error => {
+          console.log('Auto-play prevented:', error);
+        });
+      }
+    };
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => {
+      if (loop && videoSources.length === 1) {
+        video.currentTime = 0;
+        video.play();
+      }
+    };
+
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+    video.addEventListener('ended', handleEnded);
+
+    // Set video properties
+    video.muted = muted;
+    video.loop = loop;
+    video.playsInline = true;
+
+    return () => {
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('ended', handleEnded);
+    };
+  }, [autoPlay, loop, muted, videoSources.length]);
+
+  // 🎯 Manual video control
+  const changeVideo = (index) => {
+    setCurrentVideoIndex(index);
+  };
+
+  const togglePlayPause = () => {
+    const video = videoRef.current;
+    if (video) {
+      if (isPlaying) {
+        video.pause();
+      } else {
+        video.play();
+      }
     }
-  }, [currentVideo]);
+  };
+
+  // 📍 Logo positioning
+  const getLogoPosition = () => {
+    switch (logoPosition) {
+      case 'top-left':
+        return 'top-8 left-8';
+      case 'top-right':
+        return 'top-8 right-8';
+      case 'bottom-left':
+        return 'bottom-8 left-8';
+      case 'bottom-right':
+        return 'bottom-8 right-8';
+      case 'center':
+      default:
+        return 'top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2';
+    }
+  };
 
   return (
-    <div className="fixed inset-0 z-0">
-      {/* Rich animated gradient background — always visible, looks great without video */}
-      <div className="absolute inset-0" style={{
-        background: 'linear-gradient(135deg, #1a0000 0%, #2d0a0a 20%, #0A0A0A 45%, #0A0A0A 55%, #1a0505 80%, #2d0a0a 100%)'
-      }}>
-        {/* Animated red glow orbs */}
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full blur-[150px] animate-pulse"
-          style={{ background: 'radial-gradient(circle, rgba(220, 38, 38, 0.15) 0%, transparent 70%)' }} />
-        <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full blur-[130px] animate-pulse"
-          style={{ background: 'radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%)', animationDelay: '2s' }} />
-        <div className="absolute top-2/3 left-1/2 w-[400px] h-[400px] rounded-full blur-[120px] animate-pulse"
-          style={{ background: 'radial-gradient(circle, rgba(220, 38, 38, 0.1) 0%, transparent 70%)', animationDelay: '4s' }} />
+    <div className={`relative w-full h-full overflow-hidden ${className}`}>
+      {/* 🎥 Video Background */}
+      <div className="absolute inset-0">
+        <video
+          ref={videoRef}
+          key={currentVideoIndex}
+          className="w-full h-full object-cover"
+          style={{
+            filter: 'brightness(0.6) contrast(1.2) saturate(1.3)',
+            transform: 'scale(1.05)',
+            transition: `opacity ${transitionDuration}ms ease-in-out`
+          }}
+          autoPlay={autoPlay}
+          muted={muted}
+          loop={loop}
+          playsInline
+        >
+          <source 
+            src={videoSources[currentVideoIndex]} 
+            type="video/mp4" 
+          />
+          Your browser does not support the video tag.
+        </video>
       </div>
 
-      {/* Video Background — only shows when loaded */}
-      <video
-        ref={videoRef}
-        autoPlay={autoPlay}
-        muted={muted}
-        loop={loop}
-        playsInline
-        onLoadedData={() => setVideoLoaded(true)}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${videoLoaded ? 'opacity-30' : 'opacity-0'}`}
-        style={{ filter: 'brightness(0.5) saturate(1.4)' }}
-      >
-        <source src={videos[currentVideo]} type="video/mp4" />
-      </video>
-
-      {/* Subtle overlay — NOT heavy black */}
+      {/* 🌟 Overlay for better content visibility */}
       <div 
-        className="absolute inset-0" 
-        style={{ 
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.4) 100%)',
-          opacity: overlayOpacity 
-        }}
+        className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-black/50 to-blue-900/30"
+        style={{ opacity: overlayOpacity }}
       />
 
-      {/* Scan line effect */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div 
-          className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/40 to-transparent"
-          style={{ animation: 'goat-scan-line 4s linear infinite' }}
-        />
+      {/* ✨ Animated particles overlay */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        <div className="absolute inset-0">
+          {[...Array(30)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                opacity: Math.random() * 0.6 + 0.2,
+                animationDuration: `${Math.random() * 3 + 2}s`
+              }}
+            />
+          ))}
+        </div>
       </div>
-      
-      {/* GOAT Logo Watermark */}
+
+      {/* 🐐 GOAT Branding Overlay */}
       {showGoatLogo && (
-        <div className={`absolute ${logoPosition === 'top-right' ? 'top-6 right-6' : 'top-6 left-6'} z-10`}>
-          <img 
-            src="/images/branding/goat-icon-64.png" 
-            alt="GOAT Force" 
-            className="w-12 h-12 rounded-xl opacity-40 hover:opacity-80 transition-opacity duration-300"
-            style={{ filter: 'drop-shadow(0 0 10px rgba(220, 38, 38, 0.5))' }}
-          />
+        <div className={`absolute z-20 ${getLogoPosition()}`}>
+          <div className="relative">
+            {/* Logo glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-full blur-xl opacity-50 animate-pulse" />
+            
+            {/* GOAT Logo */}
+            <div className="relative bg-black/60 backdrop-blur-md rounded-full p-4 border border-purple-500/30">
+              <GoatBranding 
+                size="small" 
+                variant="neon" 
+                glow={false}
+                className="w-16 h-16"
+              />
+            </div>
+
+            {/* Floating crown */}
+            <div className="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+              <svg className="w-5 h-5 text-yellow-900" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Bottom gradient fade — subtle */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/60 to-transparent"></div>
+      {/* 🎮 Video Controls (Optional - for development) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="absolute bottom-4 right-4 z-50 flex flex-col gap-2">
+          <div className="bg-black/70 backdrop-blur-md rounded-lg p-2">
+            <p className="text-white text-xs mb-2">Enhanced Video Controls:</p>
+            <button
+              onClick={togglePlayPause}
+              className="bg-purple-600 hover:bg-purple-700 text-white text-xs px-3 py-1 rounded mb-2 w-full"
+            >
+              {isPlaying ? 'Pause' : 'Play'}
+            </button>
+            <div className="flex flex-wrap gap-1 max-w-xs">
+              {videoSources.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => changeVideo(index)}
+                  className={`text-xs px-2 py-1 rounded ${
+                    currentVideoIndex === index 
+                      ? 'bg-purple-600 text-white' 
+                      : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 📊 Video Status Indicator */}
+      <div className="absolute top-4 right-4 z-40">
+        <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-md ${
+          isLoaded 
+            ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+            : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+        }`}>
+          <div className={`w-2 h-2 rounded-full ${
+            isLoaded ? 'bg-green-400 animate-pulse' : 'bg-yellow-400'
+          }`} />
+          {isLoaded ? 'GOAT Video Ready' : 'Loading GOAT...'}
+        </div>
+      </div>
+
+      {/* 🎬 Loading State */}
+      {!isLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/70">
+          <div className="text-center">
+            <div className="relative">
+              <GoatBranding size="medium" animated={true} />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-20 h-20 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
+              </div>
+            </div>
+            <p className="text-white/90 text-xl font-medium mt-6">Loading GOAT Experience...</p>
+            <p className="text-white/60 text-sm mt-2">Greatest Of All Time Royalty Platform</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
