@@ -67,7 +67,7 @@
     "@google/generative-ai": "^0.24.1",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.78.0",
-    "axios": "^1.6.0",
+    "axios": "^1.13.5",
     "dotenv": "^17.2.3",
     "lucide-react": "^0.309.0",
     "marked": "^16.4.1",
