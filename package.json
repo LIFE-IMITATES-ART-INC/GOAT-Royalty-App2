@@ -18,7 +18,17 @@
     "start": "next start",
     "electron": "electron .",
     "start-electron": "npm run build && electron .",
+    "build:all": "bash build-all.sh",
     "build:win": "electron-builder --win --x64",
+    "build:win:nsis": "electron-builder --win nsis --x64",
+    "build:win:portable": "electron-builder --win portable --x64",
+    "build:mac": "electron-builder --mac",
+    "build:mac:dmg": "electron-builder --mac dmg",
+    "build:mac:zip": "electron-builder --mac zip",
+    "build:linux": "electron-builder --linux",
+    "build:linux:appimage": "electron-builder --linux AppImage --x64",
+    "build:linux:deb": "electron-builder --linux deb --x64",
+    "build:linux:targz": "electron-builder --linux tar.gz --x64",
     "build:portable": "electron-builder --win portable --x64",
     "electron:build:win": "electron-builder --win --x64",
     "electron:build:mac": "electron-builder --mac",
@@ -48,8 +58,7 @@
     ],
     "win": {
       "target": ["nsis", "portable"],
-      "icon": "public/icon.ico",
-      "sign": null
+      "icon": "public/icon.ico"
     },
     "mac": {
       "target": ["dmg", "zip"],

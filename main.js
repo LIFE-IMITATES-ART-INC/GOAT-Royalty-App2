@@ -2,6 +2,11 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const http = require('http');
 
+// Handle root/sandbox issues
+if (process.getuid && process.getuid() === 0) {
+    app.commandLine.appendSwitch('no-sandbox');
+}
+
 let mainWindow;
 const PORT = 3000;
 

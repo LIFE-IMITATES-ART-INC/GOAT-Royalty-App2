@@ -1,9 +1,9 @@
+/* Google Fonts - Must be before @tailwind */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Teko:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* ═══ GOOGLE FONTS ═══ */
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Teko:wght@300;400;500;600;700&display=swap');
 
 /* ═══ CUSTOM FONT FACES — GOAT FORCE ORIGINALS ═══ */
 @font-face {
