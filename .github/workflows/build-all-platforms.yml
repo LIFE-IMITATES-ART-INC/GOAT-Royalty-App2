@@ -1,0 +1,232 @@
+name: Build All Platforms
+
+on:
+  push:
+    branches: [ GOAT-APP, main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ GOAT-APP, main ]
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Create a release'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  # Build for Windows
+  build-windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build Next.js app
+        run: npm run build
+
+      - name: Build Windows installer
+        run: npx electron-builder --win --x64
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: |
+            dist/*.exe
+            dist/win-unpacked/**
+          retention-days: 30
+
+  # Build for macOS
+  build-macos:
+    runs-on: macos-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build Next.js app
+        run: npm run build
+
+      - name: Build macOS installer
+        run: npx electron-builder --mac --x64 --arm64
+        env:
+          CSC_LINK: ${{ secrets.MAC_CERTIFICATE }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CERTIFICATE_PASSWORD }}
+
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: |
+            dist/*.dmg
+            dist/*.zip
+            dist/mac/**
+          retention-days: 30
+
+  # Build for Linux
+  build-linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build Next.js app
+        run: npm run build
+
+      - name: Build Linux packages
+        run: |
+          npx electron-builder --linux AppImage --x64
+          npx electron-builder --linux deb --x64
+          npx electron-builder --linux tar.gz --x64
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: |
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.tar.gz
+            dist/linux-unpacked/**
+          retention-days: 30
+
+  # Build Portable Package
+  build-portable:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build Next.js app
+        run: npm run build
+
+      - name: Create portable package
+        run: bash build-portable-minimal.sh
+
+      - name: Upload portable artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: portable-build
+          path: |
+            dist/*.tar.gz
+            dist/*.zip
+          retention-days: 30
+
+  # Create Release
+  create-release:
+    needs: [build-windows, build-macos, build-linux, build-portable]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v') || github.event.inputs.create_release == 'true'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Display structure of downloaded files
+        run: ls -laR artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: SUPER GOAT ROYALTIES APP v${{ github.ref_name }}
+          body: |
+            # 🐐 SUPER GOAT ROYALTIES APP
+            
+            ## What's New
+            - Updated build system for all platforms
+            - Enhanced AI integration
+            - Improved royalty tracking
+            - Bug fixes and performance improvements
+            
+            ## Downloads
+            - **Windows**: Download the .exe installer or portable version
+            - **macOS**: Download the .dmg installer
+            - **Linux**: Download the .AppImage, .deb, or .tar.gz
+            
+            ## System Requirements
+            - Windows 10/11 (64-bit)
+            - macOS 10.13+
+            - Linux (Ubuntu 18.04+)
+            - 2GB RAM minimum
+            - 500MB disk space
+            
+            ## Quick Start
+            ```bash
+            curl -fsSL https://raw.githubusercontent.com/LIFE-IMITATES-ART-INC/GOAT-Royalty-App2/GOAT-APP/QUICK-INSTALL.sh | bash
+            ```
+          files: |
+            artifacts/windows-build/*
+            artifacts/macos-build/*
+            artifacts/linux-build/*
+            artifacts/portable-build/*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Notify on completion
+  notify:
+    needs: [build-windows, build-macos, build-linux, build-portable]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Build Status
+        run: |
+          echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Platform | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Windows | ${{ needs.build-windows.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| macOS | ${{ needs.build-macos.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Linux | ${{ needs.build-linux.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Portable | ${{ needs.build-portable.result }} |" >> $GITHUB_STEP_SUMMARY
