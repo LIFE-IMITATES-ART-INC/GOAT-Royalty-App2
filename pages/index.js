@@ -5,12 +5,12 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { 
-  Music, 
-  TrendingUp, 
-  DollarSign, 
-  Users, 
-  BarChart3, 
+import {
+  Music,
+  TrendingUp,
+  DollarSign,
+  Users,
+  BarChart3,
   Search,
   Play,
   Star,
@@ -21,7 +21,8 @@ import {
   Sparkles,
   Terminal,
   Globe,
-  Cpu
+  Cpu,
+  Home as HomeIcon
 } from 'lucide-react';
 
 // Import our new components
@@ -95,6 +96,12 @@ const EnhancedLandingPage = () => {
               </a>
               
               <div className="hidden md:flex items-center space-x-6">
+                <a href="/home" className="text-red-400 hover:text-red-300 transition-colors font-semibold">
+                  🏠 Home
+                </a>
+                <a href="/workshop" className="text-orange-400 hover:text-orange-300 transition-colors font-semibold">
+                  🔧 Workshop
+                </a>
                 <a href="/super-goat-command" className="text-yellow-400 hover:text-yellow-300 transition-colors font-semibold">
                   ⚡ Command Center
                 </a>
@@ -342,33 +349,37 @@ const EnhancedLandingPage = () => {
             </div>
 
             <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
-              <button 
+              <button
+                onClick={() => router.push('/home')}
+                className="group relative px-10 py-5 bg-gradient-to-r from-red-600 to-red-700 text-white font-bold text-lg rounded-full overflow-hidden transform hover:scale-105 transition-all goat-glow shadow-red-500/25"
+              >
+                <span className="relative z-10 flex items-center space-x-3">
+                  <HomeIcon className="w-6 h-6" />
+                  <span>🏠 Money Pennie's Home</span>
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+
+              <button
+                onClick={() => router.push('/workshop')}
+                className="group relative px-10 py-5 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-bold text-lg rounded-full overflow-hidden transform hover:scale-105 transition-all goat-glow shadow-orange-500/25"
+              >
+                <span className="relative z-10 flex items-center space-x-3">
+                  <Music className="w-6 h-6" />
+                  <span>🔧 Production Workshop</span>
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+
+              <button
                 onClick={() => router.push('/super-goat-command')}
-                className="group relative px-10 py-5 bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 text-white font-bold text-lg rounded-full overflow-hidden transform hover:scale-105 transition-all goat-glow shadow-red-500/25"
+                className="group relative px-10 py-5 bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-600 text-black font-bold text-lg rounded-full overflow-hidden transform hover:scale-105 transition-all goat-glow shadow-yellow-500/25"
               >
                 <span className="relative z-10 flex items-center space-x-3">
                   <Rocket className="w-6 h-6" />
-                  <span>Launch Super GOAT Command Center</span>
+                  <span>⚡ Command Center</span>
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 via-red-600 to-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </button>
-              
-              <button 
-                onClick={() => router.push('/dashboard')}
-                className="px-8 py-4 bg-white/10 backdrop-blur-md text-white font-semibold rounded-full border border-white/20 hover:bg-white/20 transition-all"
-              >
-                Classic Dashboard
-              </button>
-
-              <button 
-                onClick={() => router.push('/codex-008')}
-                className="group relative px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-700 text-white font-bold rounded-full overflow-hidden transform hover:scale-105 transition-all goat-glow shadow-cyan-500/25 border border-cyan-400/30"
-              >
-                <span className="relative z-10 flex items-center space-x-2">
-                  <Cpu className="w-5 h-5" />
-                  <span>Agent Codex 008</span>
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-yellow-500 to-red-500-600 via-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
             </div>
           </div>
