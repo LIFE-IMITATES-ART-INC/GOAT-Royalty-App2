@@ -19,7 +19,7 @@ Your deployment package includes:
 
 ## 🔧 Hostinger API Information
 
-**Your API Key**: `iLI2v04ps7OujaQVenlyBMgsPwwkGcxr44J9HGSp7cdf1e6e`
+**Your API Key**: `your-hostinger-api-token-here`
 
 **Note**: The Hostinger API returned an error (code 1016), which typically means:
 - VPS might be paused/stopped

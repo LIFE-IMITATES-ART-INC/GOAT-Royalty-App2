@@ -283,7 +283,7 @@ deployToHostinger();
 
 ```bash
 # Set environment variable
-export HOSTINGER_API_TOKEN=CLqIY1SNx72M92XS0WOvVnE2TJQ8FkQNInso0oU86c149a44
+export HOSTINGER_API_TOKEN=your-hostinger-api-token-here
 
 # Run deployment
 node deploy-hostinger.js
