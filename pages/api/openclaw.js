@@ -121,7 +121,7 @@ export default async function handler(req, res) {
               options: {
                 temperature: temperature || 0.7,
                 num_predict: max_tokens || 8192,
-                num_ctx: 8192,
+                num_ctx: 32768,
               }
             }),
             signal: AbortSignal.timeout(OLLAMA_CHAT_TIMEOUT)
