@@ -1,38 +1,41 @@
 /**
  * AI Research API - Deep Research with Citations
  */
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+import { createApiHandler, validateRequiredFields } from '../../lib/api-handler';
+import { callAIWithFallback } from '../../lib/ai-providers';
 
-  const { query, researchType = 'comprehensive', depth = 'standard', enableGrounding, enableFactCheck, deep } = req.body;
+export default createApiHandler({
+  methods: 'POST',
+  handler: async (req, res) => {
+    if (!validateRequiredFields(req, res, ['query'])) return;
 
-  if (!query) return res.status(400).json({ error: 'Query is required' });
+    const { query, researchType = 'comprehensive', depth = 'standard', enableGrounding, enableFactCheck, deep } = req.body;
 
-  const depthInstructions = {
-    quick: 'Provide a brief overview with 3-5 key points.',
-    standard: 'Provide a thorough analysis with 8-12 key findings.',
-    deep: 'Provide an exhaustive analysis with 15-25 detailed findings.',
-    exhaustive: 'Provide the most comprehensive analysis possible with 30+ findings, data points, and actionable insights.'
-  };
+    const depthInstructions = {
+      quick: 'Provide a brief overview with 3-5 key points.',
+      standard: 'Provide a thorough analysis with 8-12 key findings.',
+      deep: 'Provide an exhaustive analysis with 15-25 detailed findings.',
+      exhaustive: 'Provide the most comprehensive analysis possible with 30+ findings, data points, and actionable insights.'
+    };
 
-  const typeInstructions = {
-    comprehensive: 'Conduct a comprehensive multi-faceted research analysis.',
-    market: 'Focus on market size, growth trends, key players, and opportunities.',
-    competitive: 'Analyze competitors, their strengths/weaknesses, market positioning, and strategies.',
-    trend: 'Identify emerging trends, patterns, and future predictions.',
-    legal: 'Research relevant laws, regulations, compliance requirements, and legal precedents.',
-    technical: 'Analyze technical aspects, architectures, implementations, and best practices.',
-    financial: 'Focus on revenue models, financial metrics, investment opportunities, and ROI analysis.',
-    audience: 'Research target demographics, behavior patterns, preferences, and engagement strategies.',
-    analyze: 'Perform deep analytical research with data-driven insights.',
-    plan: 'Create a strategic plan based on research findings.',
-    compare: 'Provide a detailed side-by-side comparison analysis.',
-    forecast: 'Generate predictions and forecasts based on current data and trends.',
-    audit: 'Conduct a thorough audit and compliance review.',
-    explore: 'Explore the topic broadly, identifying unexpected connections and insights.'
-  };
+    const typeInstructions = {
+      comprehensive: 'Conduct a comprehensive multi-faceted research analysis.',
+      market: 'Focus on market size, growth trends, key players, and opportunities.',
+      competitive: 'Analyze competitors, their strengths/weaknesses, market positioning, and strategies.',
+      trend: 'Identify emerging trends, patterns, and future predictions.',
+      legal: 'Research relevant laws, regulations, compliance requirements, and legal precedents.',
+      technical: 'Analyze technical aspects, architectures, implementations, and best practices.',
+      financial: 'Focus on revenue models, financial metrics, investment opportunities, and ROI analysis.',
+      audience: 'Research target demographics, behavior patterns, preferences, and engagement strategies.',
+      analyze: 'Perform deep analytical research with data-driven insights.',
+      plan: 'Create a strategic plan based on research findings.',
+      compare: 'Provide a detailed side-by-side comparison analysis.',
+      forecast: 'Generate predictions and forecasts based on current data and trends.',
+      audit: 'Conduct a thorough audit and compliance review.',
+      explore: 'Explore the topic broadly, identifying unexpected connections and insights.'
+    };
 
-  const systemPrompt = `You are an expert research analyst for the music industry and technology sector. ${typeInstructions[researchType] || typeInstructions.comprehensive} ${depthInstructions[depth] || depthInstructions.standard}
+    const systemPrompt = `You are an expert research analyst for the music industry and technology sector. ${typeInstructions[researchType] || typeInstructions.comprehensive} ${depthInstructions[depth] || depthInstructions.standard}
 
 ${enableGrounding ? 'Include specific data points, statistics, and cite your sources.' : ''}
 ${enableFactCheck ? 'Verify claims and note confidence levels for each finding.' : ''}
@@ -48,54 +51,20 @@ Format your response as a structured research report with:
 
 Context: GOAT Royalty App - Music production and royalty management platform with 346 tracks, 1.2B+ streams, $865K+ royalties.`;
 
-  try {
-    const geminiKey = process.env.GOOGLE_AI_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_AI_API_KEY;
-    if (geminiKey) {
-      const geminiRes = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\nResearch Query: ${query}` }] }],
-            generationConfig: { temperature: 0.4, maxOutputTokens: 8192 }
-          })
-        }
-      );
-      if (geminiRes.ok) {
-        const data = await geminiRes.json();
-        const report = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (report) {
-          return res.status(200).json({
-            report, provider: 'gemini',
-            sources: extractSources(report),
-            metadata: { type: researchType, depth, query, timestamp: new Date().toISOString() }
-          });
-        }
-      }
-    }
+    const result = await callAIWithFallback({
+      prompt: `Research Query: ${query}`,
+      systemPrompt,
+      geminiOptions: { temperature: 0.4, maxOutputTokens: 8192 },
+      openaiOptions: { temperature: 0.4, maxTokens: 8192 },
+    });
 
-    const openaiKey = process.env.OPENAI_API_KEY;
-    if (openaiKey) {
-      const openaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${openaiKey}` },
-        body: JSON.stringify({
-          model: 'gpt-4o', temperature: 0.4, max_tokens: 8192,
-          messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: `Research Query: ${query}` }]
-        })
+    if (result) {
+      return res.status(200).json({
+        report: result.text,
+        provider: result.provider,
+        sources: extractSources(result.text),
+        metadata: { type: researchType, depth, query, timestamp: new Date().toISOString() }
       });
-      if (openaiRes.ok) {
-        const data = await openaiRes.json();
-        const report = data.choices?.[0]?.message?.content;
-        if (report) {
-          return res.status(200).json({
-            report, provider: 'openai',
-            sources: extractSources(report),
-            metadata: { type: researchType, depth, query, timestamp: new Date().toISOString() }
-          });
-        }
-      }
     }
 
     return res.status(200).json({
@@ -104,10 +73,8 @@ Context: GOAT Royalty App - Music production and royalty management platform wit
       sources: ['GOAT Royalty App Internal Data', 'Music Industry Reports 2024', 'Streaming Platform Analytics'],
       metadata: { type: researchType, depth, query, timestamp: new Date().toISOString() }
     });
-  } catch (error) {
-    return res.status(200).json({ report: `Research error: ${error.message}`, provider: 'error', sources: [] });
   }
-}
+});
 
 function extractSources(text) {
   const sources = [];

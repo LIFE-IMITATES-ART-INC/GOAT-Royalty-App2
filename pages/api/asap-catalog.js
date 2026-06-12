@@ -5,36 +5,20 @@
 
 import fs from 'fs';
 import path from 'path';
+import { createApiHandler } from '../../lib/api-handler';
 
-export default async function handler(req, res) {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  try {
+export default createApiHandler({
+  methods: ['GET', 'POST'],
+  cors: true,
+  handler: async (req, res) => {
     switch (req.method) {
       case 'GET':
-        await handleGetASAPCatalog(req, res);
-        break;
+        return handleGetASAPCatalog(req, res);
       case 'POST':
-        await handleSearchCatalog(req, res);
-        break;
-      default:
-        res.status(405).json({ error: 'Method not allowed' });
+        return handleSearchCatalog(req, res);
     }
-  } catch (error) {
-    console.error('ASAP Catalog API Error:', error);
-    res.status(500).json({ 
-      error: 'ASAP Catalog operation failed',
-      details: error.message 
-    });
   }
-}
+});
 
 async function handleGetASAPCatalog(req, res) {
   try {
