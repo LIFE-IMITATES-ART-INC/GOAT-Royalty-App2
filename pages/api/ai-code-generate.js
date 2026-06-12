@@ -79,9 +79,11 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Code generation error:', error);
-    return res.status(200).json({
+    return res.status(503).json({
+      error: 'Code generation service temporarily unavailable',
+      message: error.message,
       code: `// Error: ${error.message}\n// Please check your API configuration`,
-      explanation: error.message, provider: 'error'
+      provider: 'error'
     });
   }
 }

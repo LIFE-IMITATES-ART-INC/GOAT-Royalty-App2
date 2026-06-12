@@ -33,12 +33,26 @@ class GOATRoyaltyCalculator {
       try {
         const report = await this.calculateMonthlyRoyalties();
         const reportFile = await this.generateReport(report);
-        await this.sendReport(report, reportFile);
-        await this.updateSupabase(report);
         
-        console.log('Monthly royalty calculation completed!');
+        const errors = [];
+        try {
+          await this.sendReport(report, reportFile);
+        } catch (emailError) {
+          errors.push(`Email delivery failed: ${emailError.message}`);
+        }
+        try {
+          await this.updateSupabase(report);
+        } catch (dbError) {
+          errors.push(`Database update failed: ${dbError.message}`);
+        }
+        
+        if (errors.length > 0) {
+          console.warn('Monthly royalty calculation completed with errors:', errors);
+        } else {
+          console.log('Monthly royalty calculation completed successfully!');
+        }
       } catch (error) {
-        console.error('Error in royalty calculation:', error);
+        console.error('Critical error in royalty calculation:', error);
       }
     });
 
@@ -212,6 +226,11 @@ ${divider}
   }
 
   async sendReport(report, reportFile) {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.warn('Email credentials not configured — royalty report not emailed. Set EMAIL_USER and EMAIL_PASS env vars.');
+      return;
+    }
+
     try {
       const nodemailer = require('nodemailer');
       
@@ -236,7 +255,11 @@ ${divider}
 
       console.log('Royalty report emailed successfully');
     } catch (error) {
-      console.error('Error sending royalty report:', error.message);
+      console.error('Failed to send royalty report email:', error.message);
+      if (error.code) {
+        console.error('Email error code:', error.code);
+      }
+      throw error;
     }
   }
 
@@ -274,6 +297,10 @@ ${divider}
       console.log('Supabase updated with monthly royalty data');
     } catch (error) {
       console.error('Supabase update error:', error.message);
+      if (error.response) {
+        console.error('Supabase response:', error.response.status, error.response.data);
+      }
+      throw error;
     }
   }
 }

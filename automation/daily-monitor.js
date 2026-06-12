@@ -41,6 +41,10 @@ class GOATPerformanceMonitor {
   }
 
   async getSpotifyAccessToken() {
+    if (!this.spotifyRefreshToken) {
+      console.warn('Spotify refresh token not configured — skipping Spotify data fetch');
+      return null;
+    }
     try {
       const response = await axios.post('https://accounts.spotify.com/api/token', 
         new URLSearchParams({
@@ -57,12 +61,18 @@ class GOATPerformanceMonitor {
       return response.data.access_token;
     } catch (error) {
       console.error('Spotify auth error:', error.message);
+      if (error.response) {
+        console.error('Spotify auth response status:', error.response.status, error.response.data);
+      }
       return null;
     }
   }
 
   async fetchSpotifyData(accessToken) {
-    if (!accessToken) return [];
+    if (!accessToken) {
+      console.warn('No access token available — returning empty Spotify data');
+      return [];
+    }
     
     try {
       const response = await axios.get('https://api.spotify.com/v1/me/tracks?limit=50', {
@@ -78,6 +88,9 @@ class GOATPerformanceMonitor {
       }));
     } catch (error) {
       console.error('Spotify data fetch error:', error.message);
+      if (error.response) {
+        console.error('Spotify API response:', error.response.status, error.response.data);
+      }
       return [];
     }
   }
@@ -152,6 +165,11 @@ class GOATPerformanceMonitor {
   }
 
   async sendViralAlert(viralTracks) {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.warn('Email credentials not configured — viral alert not sent. Set EMAIL_USER and EMAIL_PASS env vars.');
+      return;
+    }
+
     try {
       const nodemailer = require('nodemailer');
       
@@ -190,11 +208,19 @@ Check your dashboard for full details.
 
       console.log('Viral alert email sent successfully');
     } catch (error) {
-      console.error('Error sending viral alert:', error.message);
+      console.error('Failed to send viral alert email:', error.message);
+      if (error.code) {
+        console.error('Email error code:', error.code);
+      }
     }
   }
 
   async updateDashboard(analytics) {
+    if (!this.supabaseUrl || this.supabaseUrl.includes('your-project')) {
+      console.warn('Supabase not configured — skipping dashboard update');
+      return;
+    }
+
     try {
       const summary = {
         total_tracks: analytics.length,
@@ -204,7 +230,7 @@ Check your dashboard for full details.
         timestamp: new Date().toISOString()
       };
 
-      const response = await axios.post(
+      await axios.post(
         `${this.supabaseUrl}/rest/v1/daily_performance`,
         summary,
         {
@@ -219,7 +245,10 @@ Check your dashboard for full details.
       
       console.log('Dashboard updated successfully');
     } catch (error) {
-      console.error('Dashboard update error:', error.message);
+      console.error('Dashboard update failed:', error.message);
+      if (error.response) {
+        console.error('Supabase response:', error.response.status, error.response.data);
+      }
     }
   }
 
