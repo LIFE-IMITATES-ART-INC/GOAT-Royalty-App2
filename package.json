@@ -34,6 +34,8 @@
     "electron:build:mac": "electron-builder --mac",
     "electron:build:linux": "electron-builder --linux",
     "electron-builder": "electron-builder",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "postinstall": "echo 'Postinstall complete'"
   },
   "build": {
@@ -57,11 +59,17 @@
       "next.config.js"
     ],
     "win": {
-      "target": ["nsis", "portable"],
+      "target": [
+        "nsis",
+        "portable"
+      ],
       "icon": "public/icon.ico"
     },
     "mac": {
-      "target": ["dmg", "zip"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "category": "public.app-category.music",
       "icon": "public/icon.icns",
       "hardenedRuntime": true,
@@ -115,10 +123,12 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@jest/globals": "^30.4.1",
     "@next/bundle-analyzer": "^16.0.1",
     "autoprefixer": "^10.4.16",
     "electron": "^35.7.5",
     "electron-builder": "^26.8.1",
+    "jest": "^30.4.2",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.4.0"
   }
