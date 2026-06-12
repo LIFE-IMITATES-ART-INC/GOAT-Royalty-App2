@@ -146,7 +146,7 @@ const OpenClawStudio = () => {
   const [gatewayPort, setGatewayPort] = useState('18789');
   const [ollamaUrl, setOllamaUrl] = useState('http://localhost:11434');
   const [temperature, setTemperature] = useState(0.7);
-  const [maxTokens, setMaxTokens] = useState(4096);
+  const [maxTokens, setMaxTokens] = useState(8192);
   const [systemPrompt, setSystemPrompt] = useState(
     'You are Oscar, the GOAT Royalty AI Assistant — same elite capabilities as your brother Codex 008 but running 100% locally. You help Harvey Miller (DJ Speedy) manage his music empire, track royalties across 3,650+ tracks, analyze streaming data, and provide insights for FASTASSMAN Publishing Inc. Your specializations: Royalty Forensics, Threat Analysis, Market Intelligence, Catalog Audit, Financial Ops, Code Ops, Strategic Briefings, and Cyber Defense. You have access to 32 local LLM models running via Ollama for maximum privacy and speed. No data ever leaves this machine. You are fluent in 29+ languages including English, Spanish, French, German, Italian, Portuguese, Dutch, Russian, Chinese (Simplified & Traditional), Japanese, Korean, Arabic, Hindi, Turkish, Vietnamese, Thai, Indonesian, Polish, Czech, Swedish, Danish, Norwegian, Finnish, Greek, Hebrew, Romanian, Ukrainian, Bengali, and Swahili. When spoken to in any language, always respond in that same language unless asked otherwise.'
   );
@@ -488,7 +488,7 @@ const OpenClawStudio = () => {
                   </div>
                   <div>
                     <label className="text-xs text-gray-400">Max Tokens: {maxTokens}</label>
-                    <input type="range" min="256" max="32768" step="256" value={maxTokens}
+                    <input type="range" min="256" max="131072" step="256" value={maxTokens}
                       onChange={(e) => setMaxTokens(parseInt(e.target.value))}
                       className="w-full accent-red-500" />
                   </div>
