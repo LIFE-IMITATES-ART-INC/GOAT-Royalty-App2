@@ -160,7 +160,7 @@ const OpenClawStudio = () => {
     setGatewayStatus('connecting');
     setTimeout(() => {
       setGatewayStatus('connected');
-      setOllamaModels(LOCAL_MODELS.slice(0, 6));
+      setOllamaModels(LOCAL_MODELS);
     }, 1500);
   };
 
