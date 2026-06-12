@@ -1,5 +1,5 @@
 /**
- * 🦞 OpenClaw API Endpoint — GOAT Royalty
+ * 🤖 Oscar AI API Endpoint — GOAT Royalty
  * Handles local LLM communication, model management, and gateway status
  * © 2025 Harvey Miller / FASTASSMAN Publishing Inc
  */
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
           success: true,
           gateway: {
             status: 'online',
-            version: 'OpenClaw v2026.2.26',
+            version: 'Oscar v2026.2.26',
             uptime: process.uptime(),
             platform: 'GOAT Royalty Integration',
             ollamaUrl: OLLAMA_DEFAULT_URL,
@@ -176,14 +176,14 @@ export default async function handler(req, res) {
           gateway: 'online',
           ollama: ollamaOnline ? 'connected' : 'offline',
           timestamp: new Date().toISOString(),
-          app: 'GOAT Royalty × OpenClaw',
+          app: 'GOAT Royalty × Oscar AI',
           version: '1.0.0'
         });
 
       default:
         return res.status(200).json({
           success: true,
-          service: '🦞 OpenClaw API — GOAT Royalty',
+          service: '🤖 Oscar AI API — GOAT Royalty',
           endpoints: {
             'GET /api/openclaw?action=status': 'Gateway status & system info',
             'GET /api/openclaw?action=models': 'List available LLM models',
@@ -194,7 +194,7 @@ export default async function handler(req, res) {
         });
     }
   } catch (error) {
-    console.error('OpenClaw API Error:', error);
+    console.error('Oscar AI API Error:', error);
     return res.status(500).json({
       success: false,
       error: error.message || 'Internal server error'
@@ -209,22 +209,22 @@ function generateSmartResponse(input) {
   const lower = input.toLowerCase();
 
   if (lower.includes('royalt') || lower.includes('earning') || lower.includes('revenue')) {
-    return `📊 **GOAT Royalty Analysis**\n\nBased on the FASTASSMAN Publishing catalog of 3,650+ tracks:\n\n• **Estimated Monthly Revenue**: $12,400 - $18,600 across all platforms\n• **Top Platform**: Spotify (42%), Apple Music (28%), YouTube Music (15%)\n• **Growth Trend**: +8.3% quarter-over-quarter\n• **Top Performing Track**: Currently analyzing streaming data...\n\n💡 *For real-time calculations, connect to the Royalty Engine at /api/royalty-engine*\n\n🦞 *Running in demo mode — install Ollama for full AI analysis: \`curl -fsSL https://ollama.com/install.sh | sh\`*`;
+    return `📊 **GOAT Royalty Analysis**\n\nBased on the FASTASSMAN Publishing catalog of 3,650+ tracks:\n\n• **Estimated Monthly Revenue**: $12,400 - $18,600 across all platforms\n• **Top Platform**: Spotify (42%), Apple Music (28%), YouTube Music (15%)\n• **Growth Trend**: +8.3% quarter-over-quarter\n• **Top Performing Track**: Currently analyzing streaming data...\n\n💡 *For real-time calculations, connect to the Royalty Engine at /api/royalty-engine*\n\n🤖 *Oscar is running in demo mode — install Ollama for full AI analysis: \`curl -fsSL https://ollama.com/install.sh | sh\`*`;
   }
 
   if (lower.includes('track') || lower.includes('song') || lower.includes('music') || lower.includes('catalog')) {
-    return `🎵 **Catalog Overview — FASTASSMAN Publishing**\n\n• **Total Tracks**: 3,650+\n• **Active Platforms**: 25+ DSPs worldwide\n• **Genres**: Hip-Hop, R&B, Electronic, Pop, Gospel\n• **Key Artists**: DJ Speedy, Harvey Miller, featured collaborations\n• **ISRC Coverage**: 100% registered\n• **Publishing Admin**: ASCAP/BMI registered\n\nI can help you search specific tracks, analyze performance, or generate reports. What would you like to explore?\n\n🦞 *OpenClaw Demo Mode — connect Ollama for deep catalog analysis*`;
+    return `🎵 **Catalog Overview — FASTASSMAN Publishing**\n\n• **Total Tracks**: 3,650+\n• **Active Platforms**: 25+ DSPs worldwide\n• **Genres**: Hip-Hop, R&B, Electronic, Pop, Gospel\n• **Key Artists**: DJ Speedy, Harvey Miller, featured collaborations\n• **ISRC Coverage**: 100% registered\n• **Publishing Admin**: ASCAP/BMI registered\n\nI can help you search specific tracks, analyze performance, or generate reports. What would you like to explore?\n\n🤖 *Oscar Demo Mode — connect Ollama for deep catalog analysis*`;
   }
 
   if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey') || lower.includes('what can')) {
-    return `👑 **Welcome to GOAT Royalty AI — Powered by OpenClaw**\n\nI'm your personal AI assistant for managing the FASTASSMAN Publishing empire. Here's what I can help with:\n\n🎵 **Music Catalog** — Search, analyze, and manage 3,650+ tracks\n💰 **Royalty Tracking** — Real-time earnings across all platforms\n📊 **Analytics** — Streaming trends, audience insights, growth metrics\n🎬 **Content** — Video generation, artwork, marketing materials\n🔒 **Privacy** — All processing runs locally on your hardware\n\nWhat would you like to work on today?\n\n🦞 *Tip: Install Ollama + pull llama3.3:70b for the most powerful local AI experience*`;
+    return `👑 **Welcome to GOAT Royalty AI — Powered by Oscar**\n\nI'm your personal AI assistant for managing the FASTASSMAN Publishing empire. Here's what I can help with:\n\n🎵 **Music Catalog** — Search, analyze, and manage 3,650+ tracks\n💰 **Royalty Tracking** — Real-time earnings across all platforms\n📊 **Analytics** — Streaming trends, audience insights, growth metrics\n🎬 **Content** — Video generation, artwork, marketing materials\n🔒 **Privacy** — All processing runs locally on your hardware\n\nWhat would you like to work on today?\n\n🤖 *Tip: Install Ollama + pull llama3.3:70b for the most powerful local AI experience*`;
   }
 
   if (lower.includes('deploy') || lower.includes('server') || lower.includes('host')) {
-    return `🚀 **Deployment Guide — GOAT Royalty**\n\n**Current Setup:**\n• Web App: Next.js on Hostinger VPS\n• Desktop: Electron (SuperGOATRoyalty)\n• AI Backend: OpenClaw + Ollama\n\n**Quick Deploy Commands:**\n\`\`\`bash\n# Deploy web app\nsh DEPLOY-ALL-IN-ONE.sh\n\n# Start OpenClaw gateway\nopenclaw gateway --port 18789\n\n# Start Ollama\nollama serve\n\n# Pull recommended model\nollama pull llama3.3:70b\n\`\`\`\n\nNeed help with a specific deployment step?`;
+    return `🚀 **Deployment Guide — GOAT Royalty**\n\n**Current Setup:**\n• Web App: Next.js on Hostinger VPS\n• Desktop: Electron (SuperGOATRoyalty)\n• AI Backend: Oscar + Ollama\n\n**Quick Deploy Commands:**\n\`\`\`bash\n# Deploy web app\nsh DEPLOY-ALL-IN-ONE.sh\n\n# Launch Oscar\n./Launch Raspy Oscar.command\n\n# Start Ollama\nollama serve\n\n# Pull recommended model\nollama pull llama3.3:70b\n\`\`\`\n\nNeed help with a specific deployment step?`;
   }
 
-  return `🦞 **OpenClaw AI Assistant**\n\nI received your message: "${input.substring(0, 100)}${input.length > 100 ? '...' : ''}"\n\nI'm currently running in **demo mode** without a local LLM backend. To unlock full AI capabilities:\n\n1. **Install Ollama**: \`curl -fsSL https://ollama.com/install.sh | sh\`\n2. **Pull a model**: \`ollama pull llama3.2:3b\` (fast) or \`ollama pull llama3.3:70b\` (powerful)\n3. **Start the gateway**: The app will auto-detect Ollama on localhost:11434\n\nOnce connected, I can provide intelligent responses powered by local LLMs with full privacy — no data leaves your machine.\n\n👑 *GOAT Royalty × OpenClaw — Your Music Empire, Your AI*`;
+  return `🤖 **Oscar AI Assistant**\n\nI received your message: "${input.substring(0, 100)}${input.length > 100 ? '...' : ''}"\n\nI'm currently running in **demo mode** without a local LLM backend. To unlock full AI capabilities:\n\n1. **Install Ollama**: \`curl -fsSL https://ollama.com/install.sh | sh\`\n2. **Pull a model**: \`ollama pull llama3.2:3b\` (fast) or \`ollama pull llama3.3:70b\` (powerful)\n3. **Launch Oscar**: The app will auto-detect Ollama on localhost:11434\n\nOnce connected, I can provide intelligent responses powered by local LLMs with full privacy — no data leaves your machine.\n\n👑 *GOAT Royalty × Oscar — Your Music Empire, Your AI*`;
 }
 
 // Next.js API route config — extend timeout for long-running Ollama inference

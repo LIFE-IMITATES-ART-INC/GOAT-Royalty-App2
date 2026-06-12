@@ -1,8 +1,7 @@
 /**
- * 🦞 OpenClaw Local LLM Studio — GOAT Royalty Integration
+ * 🤖 Oscar AI Studio — GOAT Royalty Integration
  * Personal AI Assistant with Local Language Models
- * Based on OpenClaw v2026.2.26 (241K+ stars)
- * https://github.com/openclaw/openclaw
+ * Powered by Ollama — Oscar is your local AI that never phones home
  * 
  * © 2025 Harvey Miller / FASTASSMAN Publishing Inc
  */
@@ -70,7 +69,7 @@ const OpenClawStudio = () => {
   const [selectedModel, setSelectedModel] = useState(LOCAL_MODELS[0]);
   const [gatewayStatus, setGatewayStatus] = useState('disconnected');
   const [messages, setMessages] = useState([
-    { role: 'system', content: '🦞 OpenClaw Gateway connected. Local LLM ready. How can I help with your music empire today?' }
+    { role: 'system', content: '🤖 Oscar is online. Local LLM ready. How can I help with your music empire today?' }
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -80,7 +79,7 @@ const OpenClawStudio = () => {
   const [temperature, setTemperature] = useState(0.7);
   const [maxTokens, setMaxTokens] = useState(4096);
   const [systemPrompt, setSystemPrompt] = useState(
-    'You are the GOAT Royalty AI Assistant powered by OpenClaw. You help Harvey Miller (DJ Speedy) manage his music empire, track royalties across 3,650+ tracks, analyze streaming data, and provide insights for FASTASSMAN Publishing Inc. You have access to local LLM models running via Ollama for maximum privacy and speed.'
+    'You are Oscar, the GOAT Royalty AI Assistant. You help Harvey Miller (DJ Speedy) manage his music empire, track royalties across 3,650+ tracks, analyze streaming data, and provide insights for FASTASSMAN Publishing Inc. You have access to local LLM models running via Ollama for maximum privacy and speed.'
   );
   const chatEndRef = useRef(null);
 
@@ -139,14 +138,15 @@ const OpenClawStudio = () => {
       <div className="bg-black/60 backdrop-blur-md border-b border-red-500/30 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="text-4xl">🦞</div>
+            <img src="/images/branding/oscar-icon.icns" alt="Oscar" className="w-10 h-10 rounded-lg" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
+            <div className="text-4xl" style={{display:'none'}}>🤖</div>
             <div>
               <h1 className="text-2xl font-black">
                 <span className="bg-gradient-to-r from-red-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">
-                  OpenClaw Local LLM Studio
+                  Oscar AI Studio
                 </span>
               </h1>
-              <p className="text-sm text-gray-400">Personal AI Assistant • Local Models • Zero Data Leakage • v2026.2.26</p>
+              <p className="text-sm text-gray-400">Your Personal AI • Local Models • Zero Data Leakage • Powered by Ollama</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -158,9 +158,9 @@ const OpenClawStudio = () => {
               {gatewayStatus === 'connected' ? <Wifi className="w-4 h-4" /> : <WifiOff className="w-4 h-4" />}
               Gateway: {gatewayStatus}
             </div>
-            <a href="https://github.com/openclaw/openclaw/releases" target="_blank" rel="noopener noreferrer"
+            <a href="https://github.com/LIFE-IMITATES-ART-INC/GOAT-Royalty-App2/releases" target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-full text-sm hover:bg-white/20 transition-all">
-              <GitBranch className="w-4 h-4" /> v2026.2.26
+              <GitBranch className="w-4 h-4" /> Oscar v2026.2
             </a>
             <div className="flex items-center gap-2 px-3 py-1.5 bg-purple-500/20 rounded-full text-sm border border-purple-500/30">
               <Crown className="w-4 h-4 text-yellow-400" /> GOAT Royalty
@@ -229,15 +229,15 @@ const OpenClawStudio = () => {
             {/* Quick Start */}
             <div className="bg-gradient-to-r from-red-900/30 to-orange-900/30 rounded-2xl p-8 border border-red-500/20">
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
-                <span className="text-3xl">🦞</span> Quick Start — OpenClaw + GOAT Royalty
+                <span className="text-3xl">🤖</span> Quick Start — Oscar + GOAT Royalty
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-black/30 rounded-xl p-5">
-                  <div className="text-lg font-bold text-red-400 mb-2">1. Install OpenClaw</div>
+                  <div className="text-lg font-bold text-red-400 mb-2">1. Install Oscar</div>
                   <code className="block bg-black/50 rounded-xl p-3 text-sm text-green-400 font-mono mb-3">
-                    npm install -g openclaw@latest
+                    ./install.command
                   </code>
-                  <p className="text-sm text-gray-400">Requires Node.js ≥22. Works on macOS, Linux, Windows (WSL2).</p>
+                  <p className="text-sm text-gray-400">Works on macOS, Linux, Windows (WSL2). Installs Ollama + models.</p>
                 </div>
                 <div className="bg-black/30 rounded-xl p-5">
                   <div className="text-lg font-bold text-orange-400 mb-2">2. Install Ollama</div>
@@ -247,11 +247,11 @@ const OpenClawStudio = () => {
                   <p className="text-sm text-gray-400">Then pull a model: <code className="text-yellow-400">ollama pull llama3.3</code></p>
                 </div>
                 <div className="bg-black/30 rounded-xl p-5">
-                  <div className="text-lg font-bold text-yellow-400 mb-2">3. Start Gateway</div>
+                  <div className="text-lg font-bold text-yellow-400 mb-2">3. Launch Oscar</div>
                   <code className="block bg-black/50 rounded-xl p-3 text-sm text-green-400 font-mono mb-3">
-                    openclaw onboard --install-daemon
+                    ./Launch Raspy Oscar.command
                   </code>
-                  <p className="text-sm text-gray-400">The wizard guides you through setup. Gateway runs on port 18789.</p>
+                  <p className="text-sm text-gray-400">Oscar starts Ollama + chat server. Gateway runs on port 3333.</p>
                 </div>
               </div>
               <div className="mt-6 flex gap-4">
@@ -259,27 +259,27 @@ const OpenClawStudio = () => {
                   className="px-6 py-3 bg-gradient-to-r from-red-600 to-orange-600 rounded-xl font-bold hover:from-red-500 hover:to-orange-500 transition-all flex items-center gap-2">
                   <Play className="w-5 h-5" /> Connect to Gateway
                 </button>
-                <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer"
+                <a href="https://github.com/LIFE-IMITATES-ART-INC/GOAT-Royalty-App2" target="_blank" rel="noopener noreferrer"
                   className="px-6 py-3 bg-white/10 rounded-xl font-bold hover:bg-white/20 transition-all flex items-center gap-2">
-                  <ExternalLink className="w-5 h-5" /> GitHub (241K ⭐)
+                  <ExternalLink className="w-5 h-5" /> GitHub
                 </a>
-                <a href="https://docs.openclaw.ai" target="_blank" rel="noopener noreferrer"
+                <a href="https://ollama.com" target="_blank" rel="noopener noreferrer"
                   className="px-6 py-3 bg-white/10 rounded-xl font-bold hover:bg-white/20 transition-all flex items-center gap-2">
-                  <FileText className="w-5 h-5" /> Documentation
+                  <FileText className="w-5 h-5" /> Ollama Docs
                 </a>
               </div>
             </div>
 
             {/* Architecture Diagram */}
             <div className="goat-gradient-card goat-gradient-card goat-card-hover/5 rounded-2xl p-6 border border-white/10">
-              <h3 className="text-xl font-bold mb-4">🏗️ OpenClaw Architecture</h3>
+              <h3 className="text-xl font-bold mb-4">🏗️ Oscar Architecture</h3>
               <div className="bg-black/40 rounded-xl p-6 font-mono text-sm text-gray-300">
                 <pre>{`
   WhatsApp / Telegram / Discord / Slack / Signal / iMessage / WebChat
                               │
                               ▼
                 ┌──────────────────────────────┐
-                │     OpenClaw Gateway          │
+                │       Oscar Gateway            │
                 │   (Local Control Plane)       │
                 │   ws://127.0.0.1:18789        │
                 └──────────────┬───────────────┘
@@ -308,9 +308,9 @@ const OpenClawStudio = () => {
               {/* Chat Header */}
               <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="text-2xl">🦞</div>
+                  <div className="text-2xl">🤖</div>
                   <div>
-                    <div className="font-bold">OpenClaw AI Chat</div>
+                    <div className="font-bold">Oscar AI Chat</div>
                     <div className="text-xs text-gray-400">Model: {selectedModel.name} • Local • Private</div>
                   </div>
                 </div>
@@ -472,7 +472,7 @@ const OpenClawStudio = () => {
         {activeTab === 'channels' && (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold">🌐 Multi-Channel Inbox</h2>
-            <p className="text-gray-400">OpenClaw connects your AI assistant to all your messaging platforms. One assistant, every channel.</p>
+            <p className="text-gray-400">Oscar connects to all your messaging platforms. One assistant, every channel.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
               {CHANNELS.map((ch, i) => (
                 <div key={i} className="goat-gradient-card goat-gradient-card goat-card-hover/5 rounded-2xl p-5 border border-white/10 hover:bg-white/10 transition-all text-center">
@@ -540,11 +540,11 @@ const OpenClawStudio = () => {
                 <h3 className="font-bold mb-4">Server Commands</h3>
                 <div className="space-y-2 font-mono text-sm">
                   {[
-                    'openclaw onboard --install-daemon',
-                    'openclaw gateway --port 18789 --verbose',
-                    'openclaw doctor',
-                    'openclaw models status --probe',
-                    'openclaw channels login',
+                    'ollama serve',
+                    'ollama list',
+                    'curl http://localhost:11434/api/tags',
+                    'curl http://localhost:3333/api/health',
+                    'ollama run gemma2-2b-local',
                     'ollama list',
                     'ollama pull llama3.3:70b',
                   ].map((cmd, i) => (
