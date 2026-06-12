@@ -58,10 +58,14 @@
     ],
     "win": {
       "target": ["nsis", "portable"],
-      "icon": "public/icon.ico"
+      "icon": "public/icon.ico",
+      "sign": null
     },
     "mac": {
-      "target": ["dmg", "zip"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "category": "public.app-category.music",
       "icon": "public/icon.icns",
       "hardenedRuntime": true,
@@ -103,6 +107,7 @@
     "dotenv": "^17.2.3",
     "ethers": "^6.9.0",
     "express": "^4.18.2",
+    "framer-motion": "^12.35.2",
     "libreoffice-convert": "^1.7.0",
     "lucide-react": "^0.309.0",
     "marked": "^16.4.1",

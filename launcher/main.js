@@ -1,5 +1,5 @@
 /**
- * 🐐⚡ SUPER GOAT NINJA LAUNCHER
+ * 🤖 OSCAR — GOAT Royalty AI Launcher
  * Main Electron Process
  * The unified hub for ALL GOAT Royalty tools
  */
@@ -15,7 +15,7 @@ const http = require('http');
 // APP CONFIG
 // ============================================================
 const APP_CONFIG = {
-  name: 'Super GOAT Ninja Launcher',
+  name: 'Oscar — GOAT Royalty AI',
   version: '2.0.0',
   author: 'Harvey Miller (DJ Speedy)',
   server: 'http://93.127.214.171:3002',
