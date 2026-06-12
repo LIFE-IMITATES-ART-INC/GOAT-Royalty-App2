@@ -3,21 +3,13 @@
  * Copyright © 2024 HARVEY L MILLER JR / JUAQUIN J MALPHURS / KEVIN W HALLINGQUEST. All rights reserved.
  */
 
-export default async function handler(req, res) {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+import { createApiHandler } from '../../lib/api-handler';
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  try {
+export default createApiHandler({
+  methods: 'GET',
+  cors: true,
+  corsOptions: { methods: 'GET, OPTIONS' },
+  handler: async (req, res) => {
     const { q } = req.query;
 
     if (!q) {
@@ -112,16 +104,8 @@ export default async function handler(req, res) {
     console.log(`Search performed: "${q}" - ${results.length} results found`);
 
     return res.status(200).json(searchResults);
-
-  } catch (error) {
-    console.error('Search API Error:', error);
-    return res.status(500).json({ 
-      error: 'Search failed',
-      message: error.message,
-      results: []
-    });
   }
-}
+});
 
 // Calculate match score for relevance
 function calculateMatchScore(track, query) {
