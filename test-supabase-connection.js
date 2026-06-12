@@ -32,7 +32,7 @@ async function testConnection() {
         console.log('   You need to run SQL-SCRIPTS.sql in Supabase SQL Editor')
         console.log('')
         console.log('📋 Next steps:')
-        console.log('   1. Go to https://supabase.com/dashboard/project/xmvlnonsxmrpvlssjstl/editor')
+        console.log('   1. Go to your Supabase project SQL Editor')
         console.log('   2. Click "SQL Editor" in left sidebar')
         console.log('   3. Click "New query"')
         console.log('   4. Copy contents of SQL-SCRIPTS.sql')

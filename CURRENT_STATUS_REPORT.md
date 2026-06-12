@@ -15,7 +15,7 @@
 - ✅ All dependencies installed (946 packages)
 
 ### API Keys Configured
-- ✅ Supabase: `https://xmvlnonsxmrpvlssjstl.supabase.co`
+- ✅ Supabase: `<your-supabase-project-url>`
 - ✅ Super Ninja API: `M6CFs0a.uqUOl_RqiEIhfBZRhGpFQn23jY99yUII7_Nk1oNGpRw`
 - ✅ Codex Master API: `cxTZOFEG1TT8tpNDCJlXgLSadZnVgahgjrbJcUzF4bf7789c`
 - ✅ GOAT Fashion API: `D7Vqj4g.t6ljK678nBb5z90vd8-thJf3A5BCCQ8kg-Shz2D5g5c`

@@ -10,8 +10,8 @@
    - Contains: All app code, Supabase integration, dependencies, configs
 
 2. **✅ Supabase Database Connected**
-   - URL: `https://xmvlnonsxmrpvlssjstl.supabase.co`
-   - Status: ✅ Connected and tested
+   - URL: `<set NEXT_PUBLIC_SUPABASE_URL in .env.local>`
+   - Status: Connected and tested
    - Tables: All 7 tables ready (royalties, tracks, contracts, analytics, copyrights, payments, profiles)
 
 3. **✅ GitHub Repository Updated**
@@ -27,17 +27,20 @@
 
 ## 🔑 Your Credentials
 
+> **SECURITY NOTE:** Do not commit real credentials to version control.
+> Store all secrets in `.env.local` (which is git-ignored). See `.env.example` for all required variables.
+
 ### Hostinger API
 ```
-API Key: iLI2v04ps7OujaQVenlyBMgsPwwkGcxr44J9HGSp7cdf1e6e
+API Key: <set HOSTINGER_API_TOKEN in .env.local>
 hPanel: https://hpanel.hostinger.com
 ```
 
 ### Supabase Database
 ```
-Project URL: https://xmvlnonsxmrpvlssjstl.supabase.co
-Anon Key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Dashboard: https://supabase.com/dashboard/project/xmvlnonsxmrpvlssjstl
+Project URL: <set NEXT_PUBLIC_SUPABASE_URL in .env.local>
+Anon Key: <set NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local>
+Dashboard: https://supabase.com/dashboard
 ```
 
 ### GitHub
@@ -268,7 +271,7 @@ See `HOSTINGER-DEPLOYMENT-COMPLETE.md` for detailed update instructions.
 - hPanel: https://hpanel.hostinger.com
 
 ### Supabase
-- Dashboard: https://supabase.com/dashboard/project/xmvlnonsxmrpvlssjstl
+- Dashboard: https://supabase.com/dashboard
 - Docs: https://supabase.com/docs
 - Support: https://supabase.com/support
 

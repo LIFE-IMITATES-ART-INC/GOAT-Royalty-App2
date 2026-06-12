@@ -6,8 +6,7 @@
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config({ path: '.env.local' });
 
-// Using the exact configuration you provided
-const supabaseUrl = 'https://xmvlnonsxmrpvlssjstl.supabase.co';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 
 console.log('🔧 Direct Supabase Connection Test\n');
@@ -45,7 +44,7 @@ async function testDirectConnection() {
                 console.log('✅ Connection successful, but tables missing');
                 console.log('🔧 SOLUTION: Run SQL-SCRIPTS.sql in Supabase SQL Editor\n');
                 console.log('📋 Steps:');
-                console.log('1. Go to https://supabase.com/dashboard/project/xmvlnonsxmrpvlssjstl');
+                console.log('1. Go to your Supabase project dashboard');
                 console.log('2. Click SQL Editor');
                 console.log('3. Click New query');
                 console.log('4. Paste SQL-SCRIPTS.sql content');
@@ -79,7 +78,7 @@ async function testDirectConnection() {
     } catch (error) {
         console.log('❌ Connection failed:', error.message);
         console.log('\n🔧 Troubleshooting steps:');
-        console.log('1. Check if project is active: https://supabase.com/dashboard/project/xmvlnonsxmrpvlssjstl');
+        console.log('1. Check if project is active in your Supabase dashboard');
         console.log('2. Verify project status (not paused)');
         console.log('3. Check API key validity');
         console.log('4. Ensure database is provisioned\n');

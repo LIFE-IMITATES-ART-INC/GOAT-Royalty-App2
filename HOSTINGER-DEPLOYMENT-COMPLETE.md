@@ -19,7 +19,7 @@ Your deployment package includes:
 
 ## 🔧 Hostinger API Information
 
-**Your API Key**: `iLI2v04ps7OujaQVenlyBMgsPwwkGcxr44J9HGSp7cdf1e6e`
+**Your API Key**: `<set HOSTINGER_API_TOKEN in .env.local>`
 
 **Note**: The Hostinger API returned an error (code 1016), which typically means:
 - VPS might be paused/stopped
@@ -336,7 +336,7 @@ pm2 info goat-app
 
 ### Your Resources:
 - GitHub Repo: https://github.com/DJSPEEDYGA/GOAT-Royalty-App2
-- Supabase Dashboard: https://supabase.com/dashboard/project/xmvlnonsxmrpvlssjstl
+- Supabase Dashboard: https://supabase.com/dashboard
 - Deployment Package: `/workspace/GOAT-Royalty-App2/goat-app-deployment.tar.gz`
 
 ## ✅ Deployment Checklist

@@ -166,7 +166,7 @@ const mrGreenChat = (message, income = 150000) => {
 // ═══ MAIN HANDLER ═══
 export default async function handler(req, res) {
   // Security Headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const _origin = req.headers.origin; if (_origin) res.setHeader('Access-Control-Allow-Origin', _origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('X-Content-Type-Options', 'nosniff');

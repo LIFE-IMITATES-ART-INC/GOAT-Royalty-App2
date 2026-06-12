@@ -9,7 +9,7 @@
 
 ### ✅ **1. Live Database Integration**
 - **Supabase Connection:** Active and verified
-- **Project URL:** https://xmvlnonsxmrpvlssjstl.supabase.co
+- **Project URL:** <your-supabase-project-url>
 - **Database Tables:** 7 core tables operational
 - **Real-time Data:** All CRUD operations working
 - **User Authentication:** Live Supabase Auth system

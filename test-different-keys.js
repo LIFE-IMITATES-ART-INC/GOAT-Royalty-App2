@@ -12,7 +12,12 @@ const keys = {
     'SUPABASE_SERVICE_ROLE_KEY': process.env.SUPABASE_SERVICE_ROLE_KEY
 };
 
-const supabaseUrl = 'https://xmvlnonsxmrpvlssjstl.supabase.co';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+if (!supabaseUrl) {
+    console.error('❌ NEXT_PUBLIC_SUPABASE_URL not set in environment');
+    process.exit(1);
+}
 
 async function testKey(keyName, keyValue) {
     if (!keyValue) {

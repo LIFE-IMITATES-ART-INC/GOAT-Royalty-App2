@@ -12,7 +12,7 @@
  */
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const _origin = req.headers.origin; if (_origin) res.setHeader('Access-Control-Allow-Origin', _origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('X-CyberWarrior-Version', '3.0');
@@ -50,7 +50,6 @@ export default async function handler(req, res) {
             encryption: { status: 'active', algorithm: 'AES-256-GCM', keys_managed: 156 },
             ai_guard: { status: 'active', models: 4, accuracy: '99.7%' },
           },
-          uptime: process.uptime(),
           timestamp: new Date().toISOString()
         });
 

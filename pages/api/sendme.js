@@ -4,10 +4,8 @@
  * © 2025 Harvey Miller / FASTASSMAN Publishing Inc
  */
 
-const os = require('os');
-
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const _origin = req.headers.origin; if (_origin) res.setHeader('Access-Control-Allow-Origin', _origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -20,16 +18,6 @@ export default async function handler(req, res) {
 
       // ═══ Discover Peers on LAN ═══
       case 'discover': {
-        const interfaces = os.networkInterfaces();
-        const localIPs = [];
-        Object.values(interfaces).forEach(iface => {
-          iface.forEach(addr => {
-            if (addr.family === 'IPv4' && !addr.internal) {
-              localIPs.push({ address: addr.address, netmask: addr.netmask, mac: addr.mac });
-            }
-          });
-        });
-
         return res.status(200).json({
           success: true,
           discovery: {
@@ -37,10 +25,8 @@ export default async function handler(req, res) {
             service: '_goat-p2p._tcp.local',
             port: 5353,
             localNode: {
-              hostname: os.hostname(),
-              ips: localIPs,
-              platform: os.platform(),
-              arch: os.arch(),
+              hostname: 'goat-node',
+              platform: 'server',
             },
             peers: [
               { id: 'node-alpha', name: 'GOAT-Studio-Main', ip: '192.168.1.100', port: 18800, model: 'Llama 3.3 70B', status: 'online', latency: '0.2ms' },

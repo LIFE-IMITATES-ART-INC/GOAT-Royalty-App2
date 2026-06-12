@@ -17,7 +17,7 @@
    - Repository: https://github.com/DJSPEEDYGA/GOAT-Royalty-App2
 
 3. **Supabase Database**: Connected and working
-   - URL: https://xmvlnonsxmrpvlssjstl.supabase.co
+   - URL: <your-supabase-project-url>
    - All tables ready
    - Authentication configured
 
