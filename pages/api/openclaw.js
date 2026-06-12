@@ -115,7 +115,7 @@ export default async function handler(req, res) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              model: model || 'llama3.2:3b',
+              model: model || 'gemma2:2b',
               messages: messages || [],
               stream: false,
               options: {
