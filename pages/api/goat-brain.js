@@ -38,7 +38,7 @@ export default async function handler(req, res) {
   initializeSystems();
   
   // Handle CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const _origin = req.headers.origin; if (_origin) res.setHeader('Access-Control-Allow-Origin', _origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   
@@ -107,7 +107,7 @@ export default async function handler(req, res) {
       console.error('GOAT Brain API Error:', error);
       return res.status(500).json({
         success: false,
-        error: error.message || 'Internal server error'
+        error: 'Internal server error'
       });
     }
   }

@@ -8,7 +8,7 @@ const OLLAMA_DEFAULT_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
 
 export default async function handler(req, res) {
   // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const _origin = req.headers.origin; if (_origin) res.setHeader('Access-Control-Allow-Origin', _origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -27,18 +27,10 @@ export default async function handler(req, res) {
           gateway: {
             status: 'online',
             version: 'OpenClaw v2026.2.26',
-            uptime: process.uptime(),
             platform: 'GOAT Royalty Integration',
-            ollamaUrl: OLLAMA_DEFAULT_URL,
           },
           system: {
-            nodeVersion: process.version,
-            platform: process.platform,
-            arch: process.arch,
-            memory: {
-              total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024) + 'MB',
-              used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + 'MB',
-            }
+            status: 'operational'
           }
         });
 

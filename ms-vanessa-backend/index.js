@@ -8,7 +8,11 @@ const axios = require('axios');
 const app = express();
 const PORT = 4000;
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(bodyParser.json());
 
 app.post('/chat', async (req, res) => {

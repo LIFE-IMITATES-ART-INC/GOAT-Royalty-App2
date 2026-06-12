@@ -21,9 +21,10 @@ Your GOAT Royalty App has been successfully merged to the main branch and is rea
    - Output Directory: `.next`
 6. **Add Environment Variables:**
    ```
-   NEXT_PUBLIC_SUPABASE_URL=https://xmvlnonsxmrpvlssjstl.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhtdmxub25zeG1ycHZsc3Nqc3RsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExODY5MzEsImV4cCI6MjA3Njc2MjkzMX0.29rr7p9mzPAyjRmnASo6c9rVZES211oFip1fh-chOtA
+   NEXT_PUBLIC_SUPABASE_URL=<your-supabase-project-url>
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-anon-key>
    ```
+   > Get these from your Supabase project dashboard under Settings → API.
 7. **Click "Deploy"**
 
 **Your app will be live at:** `https://goat-royalty-app-username.vercel.app`

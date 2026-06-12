@@ -80,7 +80,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_actual_service_role_key_here
 
 ## 🔧 Alternative: Use Existing Project
 
-If you already have a Supabase project with the reference `xmvlnonsxmrpvlssjstl`:
+If you already have a Supabase project with the reference ID (from your Supabase dashboard):
 
 1. **Check if the project is active** (not paused)
 2. **Verify the API keys** are correct

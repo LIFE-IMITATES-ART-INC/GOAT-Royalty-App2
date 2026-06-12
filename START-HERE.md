@@ -63,15 +63,15 @@ vercel
 
 ### Hostinger
 ```
-API Key: iLI2v04ps7OujaQVenlyBMgsPwwkGcxr44J9HGSp7cdf1e6e
+API Key: <set HOSTINGER_API_TOKEN in .env.local>
 hPanel: https://hpanel.hostinger.com
 ```
 
 ### Supabase
 ```
-URL: https://xmvlnonsxmrpvlssjstl.supabase.co
-Dashboard: https://supabase.com/dashboard/project/xmvlnonsxmrpvlssjstl
-Status: ✅ Connected and working
+URL: <set NEXT_PUBLIC_SUPABASE_URL in .env.local>
+Dashboard: https://supabase.com/dashboard
+Status: See .env.local for credentials
 ```
 
 ### GitHub

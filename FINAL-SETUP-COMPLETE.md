@@ -11,7 +11,7 @@
 
 ### 2. Supabase Database Integration
 - ✅ **Supabase connected and tested** ✨
-- ✅ Project URL: `https://xmvlnonsxmrpvlssjstl.supabase.co`
+- ✅ Project URL: `<your-supabase-project-url>`
 - ✅ API credentials configured in `.env.local`
 - ✅ All 7 database tables ready:
   - royalties
@@ -152,7 +152,7 @@ vercel
 
 ### Your Project Links
 - GitHub: https://github.com/DJSPEEDYGA/GOAT-Royalty-App2
-- Supabase: https://supabase.com/dashboard/project/xmvlnonsxmrpvlssjstl
+- Supabase: https://supabase.com/dashboard
 
 ## 🆘 Need Help?
 

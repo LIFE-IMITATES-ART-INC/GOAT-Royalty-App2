@@ -6,15 +6,18 @@
 
 ## 🔑 Your Credentials
 
+> **SECURITY NOTE:** Do not commit real credentials to version control.
+> Store all secrets in `.env.local` (which is git-ignored).
+
 ### Hostinger API
 ```
-API Key: iLI2v04ps7OujaQVenlyBMgsPwwkGcxr44J9HGSp7cdf1e6e
+API Key: <set HOSTINGER_API_TOKEN in .env.local>
 ```
 
 ### Supabase Database
 ```
-URL: https://xmvlnonsxmrpvlssjstl.supabase.co
-Anon Key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhtdmxub25zeG1ycHZsc3Nqc3RsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExODY5MzEsImV4cCI6MjA3Njc2MjkzMX0.29rr7p9mzPAyjRmnASo6c9rVZES211oFip1fh-chOtA
+URL: <set NEXT_PUBLIC_SUPABASE_URL in .env.local>
+Anon Key: <set NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local>
 ```
 
 ## ⚡ Quick Deploy Commands

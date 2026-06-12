@@ -4,7 +4,12 @@
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config({ path: '.env.local' });
 
-const supabaseUrl = 'https://xmvlnonsxmrpvlssjstl.supabase.co';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+if (!supabaseUrl) {
+    console.error('❌ NEXT_PUBLIC_SUPABASE_URL not set in environment');
+    process.exit(1);
+}
 const supabaseKey = process.env.SUPABASE_KEY;
 
 console.log('🔍 Checking existing tables in your Supabase project\n');
