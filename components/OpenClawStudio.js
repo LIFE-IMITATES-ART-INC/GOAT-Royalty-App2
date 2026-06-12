@@ -17,24 +17,77 @@ import {
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════
-// OpenClaw Local LLM Models Registry
+// Oscar Local LLM Models Registry — 32 Models
+// (Matches the 27+ LLM download target on FKD1 + extras)
 // ═══════════════════════════════════════════════════════════════
 const LOCAL_MODELS = [
-  { id: 'llama3.3-70b', name: 'Llama 3.3 70B', provider: 'Ollama', size: '40GB', params: '70B', type: 'Chat', speed: 'Medium', quality: '★★★★★', description: 'Meta\'s flagship open model — excellent for complex reasoning and code' },
-  { id: 'llama3.2-3b', name: 'Llama 3.2 3B', provider: 'Ollama', size: '2GB', params: '3B', type: 'Chat', speed: 'Fast', quality: '★★★☆☆', description: 'Lightweight model perfect for quick tasks and mobile devices' },
+  // ── Flagship Chat Models ──
+  { id: 'gemma2-2b-local', name: 'Gemma 2 2B (Default)', provider: 'Ollama', size: '1.6GB', params: '2B', type: 'Chat', speed: 'Instant', quality: '★★★☆☆', description: 'Oscar\'s default fast model — stays loaded in RAM, instant replies' },
+  { id: 'llama3.3-70b', name: 'Llama 3.3 70B', provider: 'Ollama', size: '40GB', params: '70B', type: 'Chat', speed: 'Slow', quality: '★★★★★', description: 'Meta\'s flagship — excellent for complex reasoning and code' },
+  { id: 'llama3.2-3b', name: 'Llama 3.2 3B', provider: 'Ollama', size: '2GB', params: '3B', type: 'Chat', speed: 'Fast', quality: '★★★☆☆', description: 'Lightweight model perfect for quick tasks' },
+  { id: 'llama3.1-8b', name: 'Llama 3.1 8B', provider: 'Ollama', size: '4.7GB', params: '8B', type: 'Chat', speed: 'Fast', quality: '★★★★☆', description: 'Great balance of speed and intelligence' },
+  { id: 'llama3.1-70b', name: 'Llama 3.1 70B', provider: 'Ollama', size: '40GB', params: '70B', type: 'Chat', speed: 'Slow', quality: '★★★★★', description: 'Previous gen flagship — still top-tier quality' },
   { id: 'mistral-7b', name: 'Mistral 7B', provider: 'Ollama', size: '4.1GB', params: '7B', type: 'Chat', speed: 'Fast', quality: '★★★★☆', description: 'Efficient European model with strong multilingual capabilities' },
   { id: 'mixtral-8x7b', name: 'Mixtral 8x7B', provider: 'Ollama', size: '26GB', params: '47B MoE', type: 'Chat', speed: 'Medium', quality: '★★★★★', description: 'Mixture of Experts — GPT-4 class performance locally' },
-  { id: 'codellama-34b', name: 'Code Llama 34B', provider: 'Ollama', size: '19GB', params: '34B', type: 'Code', speed: 'Medium', quality: '★★★★★', description: 'Specialized for code generation, debugging, and analysis' },
-  { id: 'deepseek-coder-v2', name: 'DeepSeek Coder V2', provider: 'Ollama', size: '8.9GB', params: '16B', type: 'Code', speed: 'Fast', quality: '★★★★★', description: 'State-of-the-art coding model with 128K context' },
+  { id: 'mixtral-8x22b', name: 'Mixtral 8x22B', provider: 'Ollama', size: '80GB', params: '141B MoE', type: 'Chat', speed: 'Slow', quality: '★★★★★', description: 'Largest open MoE — massive quality but needs 128GB+ RAM' },
+  { id: 'gemma2-9b', name: 'Gemma 2 9B', provider: 'Ollama', size: '5.4GB', params: '9B', type: 'Chat', speed: 'Fast', quality: '★★★★☆', description: 'Google\'s mid-size model — excellent instruction following' },
+  { id: 'gemma2-27b', name: 'Gemma 2 27B', provider: 'Ollama', size: '16GB', params: '27B', type: 'Chat', speed: 'Medium', quality: '★★★★★', description: 'Google\'s large model — near frontier performance' },
+  { id: 'phi-3-mini', name: 'Phi-3 Mini', provider: 'Ollama', size: '2.3GB', params: '3.8B', type: 'Chat', speed: 'Fast', quality: '★★★★☆', description: 'Microsoft\'s tiny genius — punches above its weight' },
   { id: 'phi-3-medium', name: 'Phi-3 Medium', provider: 'Ollama', size: '7.9GB', params: '14B', type: 'Chat', speed: 'Fast', quality: '★★★★☆', description: 'Microsoft\'s compact powerhouse — great reasoning per parameter' },
-  { id: 'gemma2-27b', name: 'Gemma 2 27B', provider: 'Ollama', size: '16GB', params: '27B', type: 'Chat', speed: 'Medium', quality: '★★★★★', description: 'Google\'s open model with excellent instruction following' },
+  { id: 'qwen2.5-7b', name: 'Qwen 2.5 7B', provider: 'Ollama', size: '4.4GB', params: '7B', type: 'Chat', speed: 'Fast', quality: '★★★★☆', description: 'Alibaba\'s efficient model — great for multilingual tasks' },
   { id: 'qwen2.5-72b', name: 'Qwen 2.5 72B', provider: 'Ollama', size: '41GB', params: '72B', type: 'Chat', speed: 'Slow', quality: '★★★★★', description: 'Alibaba\'s top model — multilingual champion with tool use' },
+  { id: 'command-r', name: 'Command R', provider: 'Ollama', size: '20GB', params: '35B', type: 'Chat', speed: 'Medium', quality: '★★★★★', description: 'Cohere\'s RAG-optimized model — great for research and retrieval' },
+  { id: 'neural-chat-7b', name: 'Neural Chat 7B', provider: 'Ollama', size: '4.1GB', params: '7B', type: 'Chat', speed: 'Fast', quality: '★★★☆☆', description: 'Intel-optimized conversational model' },
+  { id: 'vicuna-13b', name: 'Vicuna 13B', provider: 'Ollama', size: '7.4GB', params: '13B', type: 'Chat', speed: 'Medium', quality: '★★★★☆', description: 'Fine-tuned on conversations — smooth dialogue style' },
+  // ── Code Models ──
+  { id: 'codellama-34b', name: 'Code Llama 34B', provider: 'Ollama', size: '19GB', params: '34B', type: 'Code', speed: 'Medium', quality: '★★★★★', description: 'Specialized for code generation, debugging, and analysis' },
+  { id: 'codellama-7b', name: 'Code Llama 7B', provider: 'Ollama', size: '3.8GB', params: '7B', type: 'Code', speed: 'Fast', quality: '★★★★☆', description: 'Fast code assistant for quick edits and completions' },
+  { id: 'deepseek-coder-v2', name: 'DeepSeek Coder V2', provider: 'Ollama', size: '8.9GB', params: '16B', type: 'Code', speed: 'Fast', quality: '★★★★★', description: 'State-of-the-art coding model with 128K context' },
   { id: 'starcoder2-15b', name: 'StarCoder2 15B', provider: 'Ollama', size: '9GB', params: '15B', type: 'Code', speed: 'Fast', quality: '★★★★☆', description: 'BigCode\'s coding model trained on 600+ languages' },
-  { id: 'llava-v1.6', name: 'LLaVA v1.6', provider: 'Ollama', size: '4.7GB', params: '7B', type: 'Vision', speed: 'Fast', quality: '★★★★☆', description: 'Multimodal model — understands images and text together' },
+  { id: 'codegemma-7b', name: 'CodeGemma 7B', provider: 'Ollama', size: '5GB', params: '7B', type: 'Code', speed: 'Fast', quality: '★★★★☆', description: 'Google\'s coding model — great for code completion' },
+  // ── Vision / Multimodal ──
+  { id: 'llava-v1.6', name: 'LLaVA v1.6', provider: 'Ollama', size: '4.7GB', params: '7B', type: 'Vision', speed: 'Fast', quality: '★★★★☆', description: 'Multimodal — understands images and text together' },
+  { id: 'llava-llama3', name: 'LLaVA Llama3', provider: 'Ollama', size: '5.5GB', params: '8B', type: 'Vision', speed: 'Fast', quality: '★★★★★', description: 'Latest vision model — Llama3 base with image understanding' },
+  { id: 'bakllava', name: 'BakLLaVA', provider: 'Ollama', size: '4.7GB', params: '7B', type: 'Vision', speed: 'Fast', quality: '★★★★☆', description: 'Mistral-based vision model — analyze images locally' },
+  // ── Audio / Speech ──
   { id: 'whisper-large-v3', name: 'Whisper Large V3', provider: 'Local', size: '3GB', params: '1.5B', type: 'Audio', speed: 'Fast', quality: '★★★★★', description: 'OpenAI\'s speech recognition — transcribe any audio locally' },
+  // ── Embedding / RAG ──
+  { id: 'nomic-embed-text', name: 'Nomic Embed Text', provider: 'Ollama', size: '274MB', params: '137M', type: 'Embedding', speed: 'Instant', quality: '★★★★★', description: 'Text embeddings for RAG search and semantic retrieval' },
+  { id: 'mxbai-embed-large', name: 'MxBAI Embed Large', provider: 'Ollama', size: '670MB', params: '335M', type: 'Embedding', speed: 'Instant', quality: '★★★★★', description: 'High-quality embeddings for document search' },
+  { id: 'all-minilm', name: 'All-MiniLM-L6', provider: 'Ollama', size: '45MB', params: '23M', type: 'Embedding', speed: 'Instant', quality: '★★★★☆', description: 'Ultra-fast lightweight embeddings' },
+  // ── Creative / Image Gen ──
+  { id: 'stable-diffusion-xl', name: 'Stable Diffusion XL', provider: 'Local', size: '6.9GB', params: '3.5B', type: 'Image', speed: 'Medium', quality: '★★★★★', description: 'Generate images from text prompts — local ComfyUI' },
+  { id: 'sdxl-turbo', name: 'SDXL Turbo', provider: 'Local', size: '6.9GB', params: '3.5B', type: 'Image', speed: 'Fast', quality: '★★★★☆', description: 'Fast image generation in 1-4 steps' },
+  // ── Specialized ──
+  { id: 'dolphin-mixtral', name: 'Dolphin Mixtral', provider: 'Ollama', size: '26GB', params: '47B MoE', type: 'Chat', speed: 'Medium', quality: '★★★★★', description: 'Uncensored MoE model — no guardrails, full creative freedom' },
 ];
 
-// OpenClaw Channel Integrations
+// ═══════════════════════════════════════════════════════════════
+// Oscar Mission Modules (same capabilities as Codex 008)
+// ═══════════════════════════════════════════════════════════════
+const MISSION_MODULES = [
+  { id: 'royalty-forensics', name: 'Royalty Forensics', icon: '🔍', color: 'from-green-500 to-emerald-600', description: 'Scan all platforms for missing royalties & unauthorized usage', prompt: 'Run a full royalty forensics scan across all streaming platforms. Identify any missing payments, unauthorized usage of my catalog, and calculate estimated revenue recovery.' },
+  { id: 'threat-analysis', name: 'Threat Analysis', icon: '🛡️', color: 'from-red-500 to-rose-600', description: 'Scan for IP threats, unauthorized samples, and copyright violations', prompt: 'Perform a comprehensive threat analysis on my music catalog. Check for unauthorized sampling, copyright infringement, AI-generated copies, and any potential IP threats.' },
+  { id: 'market-intel', name: 'Market Intelligence', icon: '📊', color: 'from-blue-500 to-cyan-600', description: 'Real-time market analysis, trends, and strategic opportunities', prompt: 'Provide a comprehensive market intelligence briefing. Include current music industry trends, streaming algorithm changes, emerging revenue opportunities, and strategic recommendations.' },
+  { id: 'catalog-audit', name: 'Catalog Audit', icon: '📀', color: 'from-purple-500 to-violet-600', description: 'Full audit — metadata, registrations, splits, ISRC codes', prompt: 'Conduct a full catalog audit. Verify all track metadata, ISRC codes, publishing registrations, songwriter splits, and mechanical licenses.' },
+  { id: 'financial-ops', name: 'Financial Ops', icon: '💰', color: 'from-yellow-500 to-amber-600', description: 'Revenue optimization, tax strategy, and financial projections', prompt: 'Generate a financial operations report. Include total revenue, quarterly projections, tax optimization strategies, and sync licensing opportunities.' },
+  { id: 'code-ops', name: 'Code Ops', icon: '💻', color: 'from-cyan-500 to-teal-600', description: 'Generate code, debug systems, architect solutions', prompt: 'I need help with a coding task. Generate React components, API endpoints, database schemas, automation scripts, or full-stack solutions.' },
+  { id: 'strategic-brief', name: 'Strategic Brief', icon: '🎯', color: 'from-orange-500 to-red-600', description: 'Full strategic briefing — industry position, next moves, opportunities', prompt: 'Deliver a full strategic briefing. Assess current industry position, identify top 5 opportunities, outline threats, and provide a 90-day action plan.' },
+  { id: 'cyber-defense', name: 'Cyber Defense', icon: '🔒', color: 'from-slate-500 to-zinc-600', description: 'Security audit, vulnerability scan, and defense hardening', prompt: 'Run a comprehensive cyber defense assessment. Check connected systems for vulnerabilities, verify API security, and provide a security hardening roadmap.' },
+];
+
+// Oscar Crew Panel (same as Codex crew)
+const CREW_PANEL = [
+  { name: 'Expert', icon: '🧠', role: 'Deep domain specialist', status: 'active' },
+  { name: 'Council', icon: '👥', role: 'Multi-agent consensus reasoning', status: 'active' },
+  { name: 'Money Penny', icon: '💼', role: 'Business admin & scheduling', status: 'active' },
+  { name: 'Lexi', icon: '📚', role: 'Research & writing assistant', status: 'active' },
+  { name: 'Vanessa', icon: '👩‍💼', role: 'Marketing & brand strategy', status: 'active' },
+  { name: 'Nexus', icon: '🔗', role: 'Integration & automation hub', status: 'active' },
+  { name: 'Codex', icon: '🕵️', role: 'Elite intelligence operative (brother)', status: 'active' },
+];
+
+// Oscar Channel Integrations
 const CHANNELS = [
   { name: 'WhatsApp', icon: '💬', status: 'available', description: 'Connect via Baileys' },
   { name: 'Telegram', icon: '✈️', status: 'available', description: 'Bot API integration' },
@@ -48,20 +101,36 @@ const CHANNELS = [
   { name: 'Google Chat', icon: '📧', status: 'available', description: 'Chat API' },
 ];
 
-// OpenClaw Skills/Tools
+// Oscar Skills/Tools — Full capabilities matching Codex + extras
 const SKILLS = [
+  // ── Core Tools ──
   { name: 'Browser Control', icon: '🌐', category: 'Tools', description: 'CDP-powered Chrome automation' },
   { name: 'Canvas/A2UI', icon: '🎨', category: 'Visual', description: 'Agent-driven visual workspace' },
-  { name: 'Voice Wake', icon: '🎤', category: 'Voice', description: 'Always-on speech recognition' },
-  { name: 'Talk Mode', icon: '🗣️', category: 'Voice', description: 'Continuous conversation with ElevenLabs' },
-  { name: 'Cron Jobs', icon: '⏰', category: 'Automation', description: 'Scheduled task execution' },
-  { name: 'Webhooks', icon: '🔗', category: 'Automation', description: 'External trigger integration' },
   { name: 'File System', icon: '📁', category: 'Tools', description: 'Read/write/edit files' },
   { name: 'Code Execution', icon: '💻', category: 'Tools', description: 'Run code in sandboxed env' },
-  { name: 'Camera/Screen', icon: '📸', category: 'Nodes', description: 'Capture from devices' },
+  { name: 'Terminal', icon: '⌨️', category: 'Tools', description: 'Full shell access — run any command' },
+  // ── Voice & Audio ──
+  { name: 'Voice Wake', icon: '🎤', category: 'Voice', description: 'Always-on speech recognition' },
+  { name: 'Talk Mode', icon: '🗣️', category: 'Voice', description: 'Continuous conversation with ElevenLabs' },
+  { name: 'Read Aloud', icon: '🔊', category: 'Voice', description: 'Text-to-speech with voice style picker' },
+  { name: 'Speech Style', icon: '🎭', category: 'Voice', description: 'Multiple voice personas and styles' },
+  // ── Automation ──
+  { name: 'Cron Jobs', icon: '⏰', category: 'Automation', description: 'Scheduled task execution' },
+  { name: 'Webhooks', icon: '🔗', category: 'Automation', description: 'External trigger integration' },
   { name: 'Gmail Pub/Sub', icon: '📬', category: 'Automation', description: 'Email trigger hooks' },
+  { name: 'Camera/Screen', icon: '📸', category: 'Nodes', description: 'Capture from devices' },
+  // ── Codex-Level Intelligence ──
+  { name: 'Royalty Forensics', icon: '🔍', category: 'Intelligence', description: 'Scan platforms for missing revenue' },
+  { name: 'Threat Analysis', icon: '🛡️', category: 'Intelligence', description: 'IP protection & DMCA automation' },
+  { name: 'Market Intel', icon: '📊', category: 'Intelligence', description: 'Industry trends & opportunities' },
+  { name: 'Cyber Defense', icon: '🔒', category: 'Intelligence', description: 'Security audit & hardening' },
+  // ── GOAT Custom ──
   { name: 'Music Analysis', icon: '🎵', category: 'GOAT Custom', description: 'Analyze tracks & royalties' },
   { name: 'Royalty Calculator', icon: '💰', category: 'GOAT Custom', description: 'Real-time royalty computation' },
+  { name: 'Draw Local', icon: '🖼️', category: 'GOAT Custom', description: 'Stable Diffusion image generation' },
+  { name: 'GOAT Tools', icon: '🐐', category: 'GOAT Custom', description: 'Full suite — publishing, analytics, sync' },
+  { name: 'Content ID', icon: '🆔', category: 'GOAT Custom', description: 'Fingerprint & protect your catalog' },
+  { name: 'Sync Licensing', icon: '🎬', category: 'GOAT Custom', description: 'Film/TV/game placement pipeline' },
 ];
 
 const OpenClawStudio = () => {
@@ -79,7 +148,7 @@ const OpenClawStudio = () => {
   const [temperature, setTemperature] = useState(0.7);
   const [maxTokens, setMaxTokens] = useState(4096);
   const [systemPrompt, setSystemPrompt] = useState(
-    'You are Oscar, the GOAT Royalty AI Assistant. You help Harvey Miller (DJ Speedy) manage his music empire, track royalties across 3,650+ tracks, analyze streaming data, and provide insights for FASTASSMAN Publishing Inc. You have access to local LLM models running via Ollama for maximum privacy and speed.'
+    'You are Oscar, the GOAT Royalty AI Assistant — same elite capabilities as your brother Codex 008 but running 100% locally. You help Harvey Miller (DJ Speedy) manage his music empire, track royalties across 3,650+ tracks, analyze streaming data, and provide insights for FASTASSMAN Publishing Inc. Your specializations: Royalty Forensics, Threat Analysis, Market Intelligence, Catalog Audit, Financial Ops, Code Ops, Strategic Briefings, and Cyber Defense. You have access to 32 local LLM models running via Ollama for maximum privacy and speed. No data ever leaves this machine.'
   );
   const chatEndRef = useRef(null);
 
@@ -126,7 +195,9 @@ const OpenClawStudio = () => {
   const tabs = [
     { id: 'dashboard', name: 'Dashboard', icon: Monitor },
     { id: 'chat', name: 'AI Chat', icon: MessageSquare },
-    { id: 'models', name: 'Local Models', icon: Brain },
+    { id: 'missions', name: 'Missions', icon: Sparkles },
+    { id: 'models', name: 'Models (32)', icon: Brain },
+    { id: 'crew', name: 'Crew', icon: Bot },
     { id: 'channels', name: 'Channels', icon: Globe },
     { id: 'skills', name: 'Skills & Tools', icon: Zap },
     { id: 'gateway', name: 'Gateway', icon: Server },
@@ -407,6 +478,65 @@ const OpenClawStudio = () => {
                     </button>
                   ))}
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ═══ MISSIONS TAB ═══ */}
+        {activeTab === 'missions' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold">🎯 Mission Modules</h2>
+            <p className="text-gray-400">Same elite capabilities as Codex 008 — deployed locally through Oscar. Select a mission to auto-populate your chat prompt.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {MISSION_MODULES.map((mission) => (
+                <div key={mission.id} className="goat-gradient-card goat-gradient-card goat-card-hover/5 rounded-2xl p-5 border border-white/10 hover:bg-white/10 transition-all cursor-pointer"
+                  onClick={() => { setInputMessage(mission.prompt); setActiveTab('chat'); }}>
+                  <div className="text-3xl mb-3">{mission.icon}</div>
+                  <div className="font-bold mb-1">{mission.name}</div>
+                  <p className="text-xs text-gray-400">{mission.description}</p>
+                </div>
+              ))}
+            </div>
+            <div className="goat-gradient-card goat-gradient-card goat-card-hover/5 rounded-2xl p-6 border border-white/10 mt-6">
+              <h3 className="font-bold mb-3">🤖 Oscar vs Codex — Same Brain, Different Style</h3>
+              <p className="text-sm text-gray-400">Oscar has all of Codex 008&apos;s intelligence capabilities but runs <strong>100% locally</strong> via Ollama. No API keys needed, no data leaves your machine. Codex uses cloud AI (Claude/Gemini) — Oscar uses your local GPU/CPU. Same missions, same results, total privacy.</p>
+            </div>
+          </div>
+        )}
+
+        {/* ═══ CREW TAB ═══ */}
+        {activeTab === 'crew' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold">👥 Oscar Crew Panel</h2>
+            <p className="text-gray-400">Your AI crew — each with specialized skills. All running locally through Oscar.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {CREW_PANEL.map((member, i) => (
+                <div key={i} className="goat-gradient-card goat-gradient-card goat-card-hover/5 rounded-2xl p-5 border border-white/10 hover:bg-white/10 transition-all">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="text-3xl">{member.icon}</div>
+                    <div>
+                      <div className="font-bold">{member.name}</div>
+                      <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs ${
+                        member.status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
+                      }`}>
+                        <div className={`w-2 h-2 rounded-full ${member.status === 'active' ? 'bg-green-400' : 'bg-gray-500'}`} />
+                        {member.status === 'active' ? 'Online' : 'Standby'}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-400">{member.role}</p>
+                </div>
+              ))}
+            </div>
+            <div className="goat-gradient-card goat-gradient-card goat-card-hover/5 rounded-2xl p-6 border border-white/10 mt-4">
+              <h3 className="font-bold mb-3">🎤 Voice & Interaction Modes</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {['Voice Loop', 'Wake Word', 'Read Aloud', 'Talk Mode', 'Call Money Penny', 'Hello Oscar', 'Draw Local', 'GOAT Tools'].map((mode, i) => (
+                  <button key={i} className="px-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl text-sm font-medium transition-all border border-white/10 hover:border-purple-500/50">
+                    {mode}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
