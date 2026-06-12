@@ -166,20 +166,30 @@ const OpenClawStudio = () => {
 
   const sendMessage = async () => {
     if (!inputMessage.trim() || isGenerating) return;
-    
-    const userMsg = { role: 'user', content: inputMessage };
-    setMessages(prev => [...prev, userMsg]);
+
+    const currentInput = inputMessage;
+    const userMsg = { role: 'user', content: currentInput };
     setInputMessage('');
     setIsGenerating(true);
 
+    // Snapshot the full history *before* the state update so we have
+    // the complete conversation (React state is async, so `messages`
+    // inside this closure would be stale after setMessages).
+    const historySnapshot = [
+      ...messages.filter(m => m.role !== 'system').map(m => ({
+        role: m.role, content: m.content
+      })),
+      { role: 'user', content: currentInput }
+    ];
+
+    // Show the user message in the UI immediately
+    setMessages(prev => [...prev, userMsg]);
+
     try {
-      // Build conversation with system prompt + history
+      // Build full conversation: system prompt + history + new message
       const chatMessages = [
         { role: 'system', content: systemPrompt },
-        ...messages.filter(m => m.role !== 'system').map(m => ({
-          role: m.role, content: m.content
-        })),
-        { role: 'user', content: inputMessage }
+        ...historySnapshot
       ];
 
       const response = await fetch('/api/openclaw?action=chat', {
