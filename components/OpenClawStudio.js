@@ -148,7 +148,7 @@ const OpenClawStudio = () => {
   const [temperature, setTemperature] = useState(0.7);
   const [maxTokens, setMaxTokens] = useState(4096);
   const [systemPrompt, setSystemPrompt] = useState(
-    'You are Oscar, the GOAT Royalty AI Assistant — same elite capabilities as your brother Codex 008 but running 100% locally. You help Harvey Miller (DJ Speedy) manage his music empire, track royalties across 3,650+ tracks, analyze streaming data, and provide insights for FASTASSMAN Publishing Inc. Your specializations: Royalty Forensics, Threat Analysis, Market Intelligence, Catalog Audit, Financial Ops, Code Ops, Strategic Briefings, and Cyber Defense. You have access to 32 local LLM models running via Ollama for maximum privacy and speed. No data ever leaves this machine.'
+    'You are Oscar, the GOAT Royalty AI Assistant — same elite capabilities as your brother Codex 008 but running 100% locally. You help Harvey Miller (DJ Speedy) manage his music empire, track royalties across 3,650+ tracks, analyze streaming data, and provide insights for FASTASSMAN Publishing Inc. Your specializations: Royalty Forensics, Threat Analysis, Market Intelligence, Catalog Audit, Financial Ops, Code Ops, Strategic Briefings, and Cyber Defense. You have access to 32 local LLM models running via Ollama for maximum privacy and speed. No data ever leaves this machine. You are fluent in 29+ languages including English, Spanish, French, German, Italian, Portuguese, Dutch, Russian, Chinese (Simplified & Traditional), Japanese, Korean, Arabic, Hindi, Turkish, Vietnamese, Thai, Indonesian, Polish, Czech, Swedish, Danish, Norwegian, Finnish, Greek, Hebrew, Romanian, Ukrainian, Bengali, and Swahili. When spoken to in any language, always respond in that same language unless asked otherwise.'
   );
   const chatEndRef = useRef(null);
 
@@ -172,24 +172,55 @@ const OpenClawStudio = () => {
     setInputMessage('');
     setIsGenerating(true);
 
-    // Simulate local LLM response
-    setTimeout(() => {
-      const responses = [
-        `Based on your catalog of 3,650 tracks, I've analyzed the royalty distribution. Your top earner "Royalty Flow" ft. Outkast has generated $53,400 across all platforms. The ${selectedModel.name} model suggests optimizing your Spotify playlist placement could increase streams by 15-20%.`,
-        `I've run a local analysis using ${selectedModel.name}. Your FASTASSMAN Publishing catalog shows strong growth — 1,836 tracks with an average of $471 per track in estimated royalties. The Southern Hip-Hop genre is trending +23% this quarter.`,
-        `Using ${selectedModel.name} locally (no data leaves your machine), I've identified 12 tracks that are underperforming relative to their genre benchmarks. "ATL Nights" and "Empire State of Grind" could benefit from playlist pitching on Apple Music and Tidal.`,
-        `The OpenClaw automation engine has detected a royalty discrepancy on 3 tracks. "Crown Royal" ft. Waka Flocka shows $20,400 on our records but the ASCAP statement indicates $22,150. I recommend filing a correction with your PRO.`,
-        `Running ${selectedModel.name} analysis on your streaming patterns: Peak listening hours are 6-9 PM EST (commute time). I suggest scheduling your next release drop for Thursday 5 PM EST to maximize first-week streams. Your Beyoncé collaboration tracks consistently outperform by 340%.`,
+    try {
+      // Build conversation with system prompt + history
+      const chatMessages = [
+        { role: 'system', content: systemPrompt },
+        ...messages.filter(m => m.role !== 'system').map(m => ({
+          role: m.role, content: m.content
+        })),
+        { role: 'user', content: inputMessage }
       ];
-      
-      const aiMsg = { 
-        role: 'assistant', 
-        content: responses[Math.floor(Math.random() * responses.length)],
-        model: selectedModel.name
+
+      const response = await fetch('/api/openclaw?action=chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: selectedModel.id,
+          messages: chatMessages,
+          temperature,
+          max_tokens: maxTokens,
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.message) {
+        const aiMsg = {
+          role: 'assistant',
+          content: data.message.content || data.message,
+          model: data.model || selectedModel.name
+        };
+        setMessages(prev => [...prev, aiMsg]);
+      } else {
+        // Fallback if API returns error
+        const aiMsg = {
+          role: 'assistant',
+          content: `⚠️ Oscar couldn't reach Ollama. Make sure it's running: \`ollama serve\`\n\nError: ${data.error || data.note || 'Connection failed'}`,
+          model: 'system'
+        };
+        setMessages(prev => [...prev, aiMsg]);
+      }
+    } catch (error) {
+      const aiMsg = {
+        role: 'assistant',
+        content: `⚠️ Network error reaching Oscar API. Is the server running?\n\nError: ${error.message}`,
+        model: 'system'
       };
       setMessages(prev => [...prev, aiMsg]);
+    } finally {
       setIsGenerating(false);
-    }, 2000 + Math.random() * 2000);
+    }
   };
 
   const tabs = [
