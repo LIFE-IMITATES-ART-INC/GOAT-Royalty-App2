@@ -67,6 +67,8 @@ Context: ${context || 'General assistance'}`;
           if (text) {
             return res.status(200).json({ response: text, provider: 'gemini', model: geminiModel });
           }
+        } else {
+          console.warn(`Gemini API returned ${geminiRes.status}: ${geminiRes.statusText}`);
         }
       }
     }
@@ -99,6 +101,8 @@ Context: ${context || 'General assistance'}`;
           if (text) {
             return res.status(200).json({ response: text, provider: 'openai', model: openaiModel });
           }
+        } else {
+          console.warn(`OpenAI API returned ${openaiRes.status}: ${openaiRes.statusText}`);
         }
       }
     }
@@ -129,6 +133,8 @@ Context: ${context || 'General assistance'}`;
           if (text) {
             return res.status(200).json({ response: text, provider: 'claude', model: claudeModel });
           }
+        } else {
+          console.warn(`Claude API returned ${claudeRes.status}: ${claudeRes.statusText}`);
         }
       }
     }
@@ -142,8 +148,10 @@ Context: ${context || 'General assistance'}`;
 
   } catch (error) {
     console.error('AI Chat Error:', error);
-    return res.status(200).json({
-      response: generateLocalResponse(message),
+    return res.status(503).json({
+      error: 'AI service temporarily unavailable',
+      message: error.message,
+      fallback: generateLocalResponse(message),
       provider: 'local',
       model: 'super-goat-v1'
     });

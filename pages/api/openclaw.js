@@ -57,7 +57,7 @@ export default async function handler(req, res) {
             });
           }
         } catch (e) {
-          // Ollama not running — return registry defaults
+          console.warn('Ollama model listing unavailable:', e.message);
         }
         return res.status(200).json({
           success: true,
@@ -112,7 +112,7 @@ export default async function handler(req, res) {
             });
           }
         } catch (e) {
-          // Ollama not available — use smart fallback
+          console.warn('Ollama chat unavailable, using fallback:', e.message);
         }
 
         // Smart fallback responses for demo mode
@@ -164,7 +164,9 @@ export default async function handler(req, res) {
             signal: AbortSignal.timeout(3000)
           });
           ollamaOnline = healthRes.ok;
-        } catch (e) {}
+        } catch (e) {
+          console.warn('Ollama health check failed:', e.message);
+        }
 
         return res.status(200).json({
           success: true,

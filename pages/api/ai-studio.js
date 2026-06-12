@@ -242,11 +242,12 @@ ${outputFormat === 'code' ? 'FORMAT: Return clean, production-ready code with co
 
   } catch (error) {
     console.error('AI Studio Error:', error);
-    return res.status(200).json({
-      response: generateSmartLocalResponse(message, outputFormat),
+    return res.status(503).json({
+      error: 'AI Studio service temporarily unavailable',
+      message: error.message,
+      fallback: generateSmartLocalResponse(message, outputFormat),
       provider: 'local',
       model: 'super-goat-v1',
-      error: error.message,
       latency: Date.now() - startTime
     });
   }

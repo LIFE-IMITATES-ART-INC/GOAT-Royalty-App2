@@ -36,17 +36,12 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error('Ms Vanessa API error:', error);
     
-    // Fallback response if backend is not available
-    const fallbackResponses = [
-      "I'm Ms Vanessa, your AI assistant. I apologize, but I'm currently having trouble connecting to my backend. Please try again in a moment.",
-      "As your GOAT Royalty AI assistant, I'm here to help with your music publishing needs. My connection seems unstable right now.",
-      "I'm designed to help you track royalties and analyze your music career. I'm experiencing a temporary connection issue."
-    ];
+    const fallbackResponse = "I'm Ms Vanessa, your AI assistant. I'm currently having trouble connecting to my backend service. Please try again in a moment.";
     
-    const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-    
-    return res.status(200).json({
-      reply: randomResponse
+    return res.status(503).json({
+      error: 'Ms Vanessa backend service unavailable',
+      message: error.message,
+      reply: fallbackResponse
     });
   }
 }
