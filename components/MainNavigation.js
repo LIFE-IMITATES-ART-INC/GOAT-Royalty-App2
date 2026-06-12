@@ -9,7 +9,7 @@ import {
   Crown, Home, BarChart3, Music, DollarSign, Globe, Shield, 
   Video, Sparkles, Cpu, Shirt, Zap, Users, FileText, Camera,
   Headphones, TrendingUp, Package, Calendar, Monitor, Mic, Target,
-  Film, Clapperboard
+  Film, Clapperboard, Brain
 } from 'lucide-react';
 
 const MainNavigation = () => {
@@ -33,6 +33,8 @@ const MainNavigation = () => {
         { name: '✍️ AI Writer', href: '/ai-writer', icon: FileText },
         { name: '🔍 AI Research Agent', href: '/ai-research', icon: Globe },
         { name: '🧠 Deep Research', href: '/deep-research', icon: Target },
+        { name: '🚀 Super GOAT AI Hub', href: '/super-goat-ai', icon: Brain },
+        { name: '🧠 GOAT Force LLM', href: '/goat-force-llm', icon: Cpu },
         { name: 'Analytics', href: '/analytics', icon: BarChart3 },
         { name: 'Interactive AI', href: '/interactive', icon: Zap },
         { name: 'Search', href: '/search', icon: Globe }
