@@ -6,6 +6,11 @@
 
 const OLLAMA_DEFAULT_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
 
+// Timeout for Ollama chat completions — set high for slow hardware (CPU-only
+// Mac minis, USB-drive model storage, cold starts that must load the model
+// into RAM first).  Matches OLLAMA_LOAD_TIMEOUT=10m in the launch scripts.
+const OLLAMA_CHAT_TIMEOUT = parseInt(process.env.OLLAMA_CHAT_TIMEOUT, 10) || 600000; // 10 min
+
 export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -97,7 +102,7 @@ export default async function handler(req, res) {
                 num_predict: max_tokens || 4096,
               }
             }),
-            signal: AbortSignal.timeout(120000)
+            signal: AbortSignal.timeout(OLLAMA_CHAT_TIMEOUT)
           });
 
           if (chatRes.ok) {
@@ -221,3 +226,8 @@ function generateSmartResponse(input) {
 
   return `🦞 **OpenClaw AI Assistant**\n\nI received your message: "${input.substring(0, 100)}${input.length > 100 ? '...' : ''}"\n\nI'm currently running in **demo mode** without a local LLM backend. To unlock full AI capabilities:\n\n1. **Install Ollama**: \`curl -fsSL https://ollama.com/install.sh | sh\`\n2. **Pull a model**: \`ollama pull llama3.2:3b\` (fast) or \`ollama pull llama3.3:70b\` (powerful)\n3. **Start the gateway**: The app will auto-detect Ollama on localhost:11434\n\nOnce connected, I can provide intelligent responses powered by local LLMs with full privacy — no data leaves your machine.\n\n👑 *GOAT Royalty × OpenClaw — Your Music Empire, Your AI*`;
 }
+
+// Next.js API route config — extend timeout for long-running Ollama inference
+export const config = {
+  maxDuration: 600, // 10 min (matches OLLAMA_LOAD_TIMEOUT)
+};
